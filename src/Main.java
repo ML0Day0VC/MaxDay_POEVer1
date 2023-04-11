@@ -31,7 +31,9 @@ public class Main {
              *
              */
 
+            TableManager tableManager = new TableManager();
 
+            tableManager.table();
 
 
             MainPage mainPage = new MainPage();

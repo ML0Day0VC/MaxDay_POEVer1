@@ -41,7 +41,11 @@ public class AsciiArtTable {
 
     public AsciiArtTable(final int padding) {
         this(padding, "╔═╤╗║╟─┬╢╪╠╣│╚╧╝┼");
-    }
+    } // ╔ ═ ╤ ╗ ║ ╟ ─ ┬ ╢ ╪ ╠ ╣ │ ╚ ╧ ╝ ┼
+    //_ _ _
+    //       |
+    //       __
+    //╔═╤╗║╟─┬╢╪╠╣│╚╧╝┼
 
     public AsciiArtTable(final int padding, final String borderCharacters) {
         this.headerCols = new ArrayList<>();
