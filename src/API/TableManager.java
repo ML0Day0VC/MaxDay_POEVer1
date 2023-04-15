@@ -83,14 +83,13 @@ public class TableManager {
                 newObj.put("date", newData);
                 break;
             case 4:
-                newObj.put("isCompleated", newData);
+                newObj.put("isCompleated", newData.equalsIgnoreCase("true"));
                 break;
             default:
                 System.out.println("you messed up its between 1 and 4");
         }
         update(uName, jsonArray.toJSONString());
     }
-
     public void update(String path, String data) throws Exception {
         FileWriter fileWriter = new FileWriter("src/tables/" + path + "Table.json");
         fileWriter.write(data);

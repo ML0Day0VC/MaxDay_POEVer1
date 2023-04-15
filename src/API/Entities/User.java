@@ -7,7 +7,7 @@ package API.Entities;
 
 public class User {
 
-    private String uName, encyptedPass, fName, sName, dOb;
+    private String uName = "", encyptedPass = "", fName = "", sName = "", dOb = "";
 
     //TODO im debating wether to put the encrypted password here like fr idk if its a good idea or not my future self will tell me if its a dumb idea or not lmao
     public User(String uname, String encryptedPassword, String fname, String sname, String doB) {
@@ -39,7 +39,7 @@ public class User {
     }
 
     public String getTablePath() {
-        return  String.format("src/tables/%sTable.json", getuName());
+        return String.format("src/tables/%sTable.json", getuName());
     }
 
     public void setuName(String uName) {

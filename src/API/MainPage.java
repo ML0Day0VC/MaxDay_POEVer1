@@ -75,9 +75,6 @@ public class MainPage extends Thread {
              */
 
 
-
-
-
             LoginManager lm = new LoginManager();
             FileManager fm = new FileManager();
             System.out.println("Please type help for more information");
@@ -99,30 +96,89 @@ public class MainPage extends Thread {
                         break;
                     case "table":
 
-                       TableManager tableManager = new TableManager();
-
-                       tableManager.genTable("max");
-
-
-                      // tableManager.removeItem("max",2);
-                       // tableManager.genTable("max");
-
-                       //     tableManager.addItem("max","this is a new task", "idk this could work its not clear at this point " , "22/33/2343",false);
+                        //TODO:check if user is logged in
+                        TableManager tableManager = new TableManager();
 
 
-                    //   tableManager.edit("max",1, 2, "new task descritmkawdl");
+                        System.out.println("Table View:\n\n");
+
+                        String testName = "max";
+                        boolean isStoppedTable = false;
+                        while (!isStoppedTable) {
+                            switch (reader.readLine()) {
+                                case "?":
+                                case "help":
+                                    System.out.println("""
+                                            > help - displays this page
+                                            > display - shows the updated table
+                                            > add - adds info to the table
+                                            > edit - edits the table 
+                                            > remove - removes a line from the table
+                                            > logout - logs out the user""");
+                                    break;
+                                case "display":
+                                    tableManager.genTable(testName);
+                                    break;
+                                case "add":
+                                    String[] str = new String[4];
+                                    System.out.println("Please prepare to enter the data for the new entry");
+                                    System.out.println("Please enter the name of the task");
+                                    str[0] = reader.readLine();
+                                    System.out.println("Please enter the description of the task");
+                                    str[1] = reader.readLine();
+                                    System.out.println("Please enter the date of the task [Format : dd/mm/yyyy]");
+                                    str[2] = reader.readLine();
+                                    System.out.println("Please enter the state of the task if it has been completed [true | false]");
+                                    str[3] = reader.readLine();
+                                    tableManager.addItem(testName, str[0], str[1], str[2], str[3].equalsIgnoreCase("true"));
+                                    break;
+                                case "edit":
+                                    System.out.println("Please prepare to enter the data for the edited entry");
+                                    System.out.println("Please select the index of the entry you would like to edit");
+                                    int var1 = Integer.parseInt(reader.readLine());
+                                    System.out.println("""
+                                            Please select the entry that you would like to change
+                                            
+                                            > Name of Task: 1
+                                            > Description of Task: 2
+                                            > Date of the Task: 3
+                                            > Task Completion: 4
+                                                    Please enter a value between 1 and 4 to select what u want to edit""");
+                                    int var2 = Integer.parseInt(reader.readLine());
+                                    System.out.println("Please enter the new data");
+                                    String var3 = reader.readLine();
+                                    tableManager.edit(testName,var1, var2, var3);
+                                    break;
+                                case "remove":
+                                    System.out.println("Please input the num of the entry you would like to remove");
+                                    int var4 = Integer.parseInt(reader.readLine());
+                                    System.out.println(String.format("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"", var4));
+                                    if (reader.readLine().equalsIgnoreCase("yes"))
+                                        tableManager.removeItem(testName, var4);
+                                    break;
+                                case "logout":
+                                    System.out.println("API.Entities.User is now logged out");
+                                    lm.setIsSignedIn(false);
+                                    isStoppedTable = true;
+                                    break;
+                                default:
+                                    //TODO add info to default
+                            }
+                        }
 
 
-                      //  tableManager.genTable("max");
+                        // tableManager.removeItem("max",2);
+                        // tableManager.genTable("max");
+
+                        //     tableManager.addItem("max","this is a new task", "idk this could work its not clear at this point " , "22/33/2343",false);
 
 
+                        //   tableManager.edit("max",1, 2, "new task descritmkawdl");
 
 
+                        //  tableManager.genTable("max");
 
 
-
-
-                        break;
                     case "login":
                         if (lm.getSignedIn()) {
                             System.err.println("Another API.Entities.User is already signed in. Please Sign out before continuing");
@@ -130,10 +186,6 @@ public class MainPage extends Thread {
                         }
                         lm.login();
 
-                        break;
-                    case "logout":
-                        System.out.println("API.Entities.User is now logged out");
-                        lm.setIsSignedIn(false);
                         break;
                     case "signup":
 
