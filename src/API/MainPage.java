@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLOutput;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainPage extends Thread {
@@ -85,13 +87,11 @@ public class MainPage extends Thread {
                 }
                 switch (string[0].toLowerCase(Locale.ROOT)) {
                     case "?":
-                    case "help":
+                    case "help": //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
                         System.out.println("""
                                 > help - displays this page
-                                > display - shows the table 
                                 > login - provides page for user login
-                                > logout - logs out the current user
-                                > signup - allows the user to create a new acoount
+                                > signup - allows the user to create a new account
                                 > exit - exits the program""");
                         break;
                     case "table":
@@ -138,7 +138,7 @@ public class MainPage extends Thread {
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
                                             Please select the entry that you would like to change
-                                            
+                                                                                        
                                             > Name of Task: 1
                                             > Description of Task: 2
                                             > Date of the Task: 3
@@ -147,7 +147,7 @@ public class MainPage extends Thread {
                                     int var2 = Integer.parseInt(reader.readLine());
                                     System.out.println("Please enter the new data");
                                     String var3 = reader.readLine();
-                                    tableManager.edit(testName,var1, var2, var3);
+                                    tableManager.edit(testName, var1, var2, var3);
                                     break;
                                 case "remove":
                                     System.out.println("Please input the num of the entry you would like to remove");
@@ -165,19 +165,6 @@ public class MainPage extends Thread {
                                     //TODO add info to default
                             }
                         }
-
-
-                        // tableManager.removeItem("max",2);
-                        // tableManager.genTable("max");
-
-                        //     tableManager.addItem("max","this is a new task", "idk this could work its not clear at this point " , "22/33/2343",false);
-
-
-                        //   tableManager.edit("max",1, 2, "new task descritmkawdl");
-
-
-                        //  tableManager.genTable("max");
-
 
                     case "login":
                         if (lm.getSignedIn()) {
@@ -201,14 +188,27 @@ public class MainPage extends Thread {
                         String dOB = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
-                        System.out.println("Please Enter your password");
+                        System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass(">");
-                        deepEncrypt.genNewUser(uName, uPassword, fName, sName, dOB);
-                        System.out.println("New API.Entities.User Created\nPlease Sign in if you want to continue");
 
+                        /**
+                         * ^: asserts that the string starts at the beginning.
+                         * (?=.*[a-z]): a positive lookahead that asserts that the string contains at least one lowercase letter (a-z).
+                         * (?=.*[A-Z]): a positive lookahead that asserts that the string contains at least one uppercase letter (A-Z).
+                         * (?=.*\d): a positive lookahead that asserts that the string contains at least one digit (0-9).
+                         * [a-zA-Z\d]{8,}: matches any character that is a lowercase letter, an uppercase letter, or a digit, and requires that the length of the string is at least 8 characters.
+                         * $: asserts that the string ends at this point.
+                         */
+                        //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
+                        Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+                        if (pRegex.matcher(uPassword).matches()) {
+                            //password is valid
+                            deepEncrypt.genNewUser(uName, uPassword, fName, sName, dOB);
+                            System.out.println("New API.Entities.User Created\nPlease Sign in if you want to continue");
+                        } else
+                            System.out.println("The password does not contain the required characters and numbers\n\t Process has been canceled");
                         break;
                     case "exit":
-
                         System.exit(420);
                         break;
                     default:

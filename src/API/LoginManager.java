@@ -47,7 +47,7 @@ public class LoginManager {
         String password = "";
         password = in.readLine();
         et.stopMasking();
-        return password;
+        return password; //TODo; need to adda validate password for the criteria sobbing face
     }
 
     public static String maskPasswordOld() throws IOException {

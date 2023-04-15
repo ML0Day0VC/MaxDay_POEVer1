@@ -80,7 +80,7 @@ public class TableManager {
                 newObj.put("dTask", newData);
                 break;
             case 3:
-                newObj.put("date", newData);
+                newObj.put("date", newData); //TODO: add date checker to check for a valid date ect...
                 break;
             case 4:
                 newObj.put("isCompleated", newData.equalsIgnoreCase("true"));
