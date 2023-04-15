@@ -66,6 +66,14 @@ public class MainPage extends Thread {
              *
              */
 
+
+            /**
+             * TODO: The best way todo this is to have 2 method layers one for logging in and stuff and then have another one embed into it so that it can be used without the random other tools like loging in when your already logged in.
+             */
+
+
+
+
             LoginManager lm = new LoginManager();
             FileManager fm = new FileManager();
             System.out.println("Please type help for more information");
@@ -87,6 +95,9 @@ public class MainPage extends Thread {
                         break;
                     case "display":
 
+                     //   TableManager tableManager = new TableManager();]
+                     //   tableManager.genTable();
+
 
 
 
@@ -95,9 +106,8 @@ public class MainPage extends Thread {
 
                         break;
                     case "login":
-
                         if (lm.getSignedIn()) {
-                            System.err.println("Another User is already signed in. Please Sign out before continuing");
+                            System.err.println("Another API.Entities.User is already signed in. Please Sign out before continuing");
                             break;
                         }
                         lm.login();
@@ -105,7 +115,7 @@ public class MainPage extends Thread {
 
                         break;
                     case "logout":
-                        System.out.println("User is now logged out");
+                        System.out.println("API.Entities.User is now logged out");
                         lm.setIsSignedIn(false);
                         break;
                     case "signup":
@@ -125,7 +135,7 @@ public class MainPage extends Thread {
                         System.out.println("Please Enter your password");
                         String uPassword = lm.readMaskedPass(">");
                         deepEncrypt.genNewUser(uName, uPassword, fName, sName, dOB);
-                        System.out.println("New User Created\nPlease Sign in if you want to continue");
+                        System.out.println("New API.Entities.User Created\nPlease Sign in if you want to continue");
 
                         break;
                     case "exit":

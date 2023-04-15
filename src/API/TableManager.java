@@ -9,14 +9,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.json.simple.JSONValue.parse;
 
 public class TableManager {
 
+    //Im going to be real with you i actually cannot remember what i used this for at all i literally cannot remember
     private static String[] parseTaskObject(JSONObject mTask) {
         JSONObject task = (JSONObject) mTask.get("task");
         int taskId = (int) task.get("num");
@@ -28,53 +24,39 @@ public class TableManager {
     }
 
 
-    public static void genTable() throws Exception {
-
-        //TODO: what the fuck is a table at this point this is like cpome on man im loosing my mind at how todo this without loosing my mind
-
-
+    public static void genTable(String username) throws Exception {
+        //TODO: what the fuck is a table at this point this is like cpme on man im loosing my mind at how todo this without loosing my mind
         JSONParser parser = new JSONParser();
         JSONArray jsonArray = new JSONArray();
-
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
         FileReader reader = new FileReader("src/tables/maxTable.json"); // ik u can throw this into a try catch im not dumb im just lazy
-
         Object obj = parser.parse(reader);
         if (obj instanceof JSONArray)
             jsonArray = (JSONArray) obj;
-        AsciiArtTable aat = new AsciiArtTable();
-        aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
         for (Object objs : jsonArray) {
             String str = objs.toString();
             System.out.println();
-
             JSONObject jsonObject = (JSONObject) objs;
-            long num = (long) jsonObject.get("num");
-            String nTask = (String) jsonObject.get("nTask");
-            String dTask = (String) jsonObject.get("dTask");
-            String date = (String) jsonObject.get("date");
-            boolean isCompleted = (boolean) jsonObject.get("isCompleated");
-            aat.add(num, nTask, dTask, date, (isCompleted ? "✓" : "X"));
-
-                    }
-
+            aat.add((long) jsonObject.get("num"), (String) jsonObject.get("nTask"), (String) jsonObject.get("dTask"), (String) jsonObject.get("date"), ((boolean) jsonObject.get("isCompleated") ? "✓" : "X"));
+        }
+        aat.print(System.out);
     }
-
 
 
     // uncommented crap. for some reason i rly struggled with converting the JSOnArray to a string for whatever reason it is literally hell
 
 
+    //  System.out.println(aat.getOutput());
+    // String[] stringArray = jsonArray.subList(new String[0]);
+    //toArray(new String[0]);
 
-      //  System.out.println(aat.getOutput());
-        // String[] stringArray = jsonArray.subList(new String[0]);
-        //toArray(new String[0]);
 
+    //   for (String s : stringArray) {
+    //       System.out.println(s);
+    //   }
 
-        //   for (String s : stringArray) {
-        //       System.out.println(s);
-        //   }
-
-        //String[] arr = jsonArray.toString().replace("},{", " ,").split(",");     // please dont murder me its such a bad way of doing it but it works
+    //String[] arr = jsonArray.toString().replace("},{", " ,").split(",");     // please dont murder me its such a bad way of doing it but it works
 /*
         List<String> list = new ArrayList<String>();
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -107,11 +89,11 @@ public class TableManager {
             taskList.add(obj);
 */
 
-        // Object obj = jsonParser.parse(reader);
-        //  JSONArray taskList = (JSONArray) obj;
-        //taskList.add(obj);
+    // Object obj = jsonParser.parse(reader);
+    //  JSONArray taskList = (JSONArray) obj;
+    //taskList.add(obj);
 
-        // taskList.forEach(emp -> parseTaskObject((JSONObject) emp));
+    // taskList.forEach(emp -> parseTaskObject((JSONObject) emp));
 /*
             taskList.forEach(item -> {
                 JSONObject ob = (JSONObject) item;
@@ -122,12 +104,12 @@ public class TableManager {
  */
 
 
-        // AsciiArtTable aat = new AsciiArtTable();
-        // aat.addHeaderCols("title", "task name", "due date", "has been completed");
+    // AsciiArtTable aat = new AsciiArtTable();
+    // aat.addHeaderCols("title", "task name", "due date", "has been completed");
 
 
-        //   aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
-        // aat.add(00, "This is the name of a task that has set up ", "This is a random task with a random description that can be anything ", "date", " ☐ ✓ ");
+    //   aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
+    // aat.add(00, "This is the name of a task that has set up ", "This is a random task with a random description that can be anything ", "date", " ☐ ✓ ");
 /*
 
             for (Object o : taskList) {
@@ -158,18 +140,13 @@ public class TableManager {
  */
 
 
+    // System.out.println(genRow(1,"order the package", "the package number is 288271672", "29/27/16262",false));
 
 
+    //have a visual impression (not part of the test)
 
 
-
-        // System.out.println(genRow(1,"order the package", "the package number is 288271672", "29/27/16262",false));
-
-
-        //have a visual impression (not part of the test)
-
-
-    }
+}
 /*
 
     public static String genRow(int n,String name, String desc, String date, boolean compleeated) {
@@ -194,8 +171,6 @@ public class TableManager {
     }
 
  */
-
-
 
 
 /**

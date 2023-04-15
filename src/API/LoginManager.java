@@ -32,6 +32,16 @@ public class LoginManager {
         return isSignedIn;
     }
 
+
+    public void LoadUser(){ // usually u would use a bunch of getters/ setters to set the constansts but thats kinda meh also
+
+    }
+
+
+
+
+
+
     /**
      * TODO:clean this up with errasor
      *
@@ -48,8 +58,6 @@ public class LoginManager {
         et.stopMasking();
         return password;
     }
-
-
     public static String maskPasswordOld() throws IOException {
         EThread et = new EThread();
         Thread mask = new Thread(et);
