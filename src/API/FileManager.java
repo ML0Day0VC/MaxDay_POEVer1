@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class FileManager {
     private static final String PATH = "passwords.txt";
-//TODO: please fix this its so bad omg
+    //TODO: please fix this its so bad omg
     private File file = new File(PATH);
 
     public void createDirectory() throws IOException {// for anyone who wants to say that throwing it here is stupid then I say cope and seethe xDD
@@ -53,7 +54,7 @@ public class FileManager {
 
     //////TBLManager//////
 
-
+//TODO PLEASE IF U SEE THIS DO THIS PLEASEEEEEEEEE
     public void updateTBLManager(String data) throws IOException {
 
     }
@@ -62,15 +63,9 @@ public class FileManager {
     public void loadTBLManager(String data) throws IOException {
 
     }
-    public void createTBLManager(String owner) throws IOException {
 
-        Path p= Files.createFile(Path.of("src/tables/" + owner + ".txt"));
-
-        //if (file.createNewFile("src/tables/" + owner + ".txt"))
-            System.out.println("File created");
-        //else
-          //  System.out.println("File already exists.");
-
+    public void createTBLManager(String uName) throws IOException {
+        Files.createFile(Path.of("src/tables/" + uName.toLowerCase(Locale.ROOT) + ".json"));
     }
 
 

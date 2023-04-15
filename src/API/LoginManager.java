@@ -16,8 +16,9 @@ public class LoginManager {
         System.out.println("Please Enter Username");
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
+        MainPage.value(uName); // cache the name that's logged in lol
         if (deepEncrypt.valid(uName, readMaskedPass(">"))) {
-            MainPage.value(uName); // cache the name that's logged in lol
+
             setIsSignedIn(true);
         }else
             System.out.println("Unknown username or password. Please check your credentials and try again");
@@ -39,7 +40,7 @@ public class LoginManager {
      * @return
      */
     public static String readMaskedPass(String prompt) throws Exception {
-        EraserThread et = new EraserThread(prompt);
+        EraserThread et = new EraserThread();
         Thread mask = new Thread(et);
         mask.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

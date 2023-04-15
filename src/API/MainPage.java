@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLOutput;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -18,7 +19,6 @@ import java.util.regex.Pattern;
 
 
 public class MainPage extends Thread {
-    private static User user;
     private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
 
@@ -76,11 +76,13 @@ public class MainPage extends Thread {
                                 > exit - exits the program""");
                         break;
                     case "table":
-
-                        //TODO:check if user is logged in
+                        if (!lm.getSignedIn()) {
+                            System.err.println("User is not logged in. Please Sign in before continuing");
+                            break;
+                        }
                         TableManager tableManager = new TableManager();
                         System.out.println("Table View:\n\n");
-                        String testName = "max";
+                        String currentUserFromCache = "";
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
                             switch (reader.readLine()) {
@@ -95,7 +97,7 @@ public class MainPage extends Thread {
                                             > logout - logs out the user""");
                                     break;
                                 case "display":
-                                    tableManager.genTable(testName);
+                                    tableManager.genTable(currentUserFromCache);
                                     break;
                                 case "add":
                                     String[] str = new String[4];
@@ -108,7 +110,7 @@ public class MainPage extends Thread {
                                     str[2] = reader.readLine();
                                     System.out.println("Please enter the state of the task if it has been completed [true | false]");
                                     str[3] = reader.readLine();
-                                    tableManager.addItem(testName, str[0], str[1], str[2], str[3].equalsIgnoreCase("true"));
+                                    tableManager.addItem(currentUserFromCache, str[0], str[1], str[2], str[3].equalsIgnoreCase("true"));
                                     break;
                                 case "edit":
                                     System.out.println("Please prepare to enter the data for the edited entry");
@@ -125,14 +127,14 @@ public class MainPage extends Thread {
                                     int var2 = Integer.parseInt(reader.readLine());
                                     System.out.println("Please enter the new data");
                                     String var3 = reader.readLine();
-                                    tableManager.edit(testName, var1, var2, var3);
+                                    tableManager.edit(currentUserFromCache, var1, var2, var3);
                                     break;
                                 case "remove":
                                     System.out.println("Please input the num of the entry you would like to remove");
                                     int var4 = Integer.parseInt(reader.readLine());
                                     System.out.println(String.format("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"", var4));
                                     if (reader.readLine().equalsIgnoreCase("yes"))
-                                        tableManager.removeItem(testName, var4);
+                                        tableManager.removeItem(currentUserFromCache, var4);
                                     break;
                                 case "logout":
                                     System.out.println("API.Entities.User is now logged out");
@@ -150,12 +152,9 @@ public class MainPage extends Thread {
                             break;
                         }
                         lm.login();
+                        Collection<Object> values = cache.values();
+                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT); // extracting from cache
 
-                        String[] valuesArray = cache.values().toArray(new String[0]);
-
-                        for (String value : valuesArray) {
-                            System.out.println(value);
-                        }
                         break;
                     case "signup":
 

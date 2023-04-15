@@ -22,7 +22,6 @@ import java.util.Scanner;
  * Adapted form oracle docs
  */
 
-
 public class deepEncrypt {
     private static String[] uInfo = null; //TODO u can use a get user here so u can retrun it maybe in the password checker but the cache idea is just so much more based lmfao
 
@@ -145,7 +144,6 @@ public class deepEncrypt {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return bytes;
-
     }
 
 
