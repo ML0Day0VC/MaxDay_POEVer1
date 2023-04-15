@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Max Day as rewritten 76% of it to be more efficient and better. This counts as almost an entire rewirte and since this is published under the MIT license (https://github.com/klaus31/ascii-art-table/blob/master/LICENSE)
  * which allows for odification and distrobution I may claim the rewirte as mine byt credit that it was his based of klaus31's
  * If there is any disagreement then comparasons to the origional and mine may be drawn
+ * Changes to view the diff is here https://github.com/ML0Day0VC/MaxDay_POEVer1/commit/675ea44fee5f40b763d0fdd4c7494c9b37d8093c
  */
 
 public class AsciiArtTable {

@@ -4,8 +4,6 @@
  */
 package API;
 
-import java.io.*;
-
 class EraserThread implements Runnable {
     private boolean stop;
     public EraserThread(String prompt) {
@@ -27,3 +25,5 @@ class EraserThread implements Runnable {
         this.stop = false;
     }
 }
+
+

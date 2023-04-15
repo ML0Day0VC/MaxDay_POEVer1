@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 
 public class FileManager {
     private static final String PATH = "passwords.txt";
-
+//TODO: please fix this its so bad omg
     private File file = new File(PATH);
 
     public void createDirectory() throws IOException {// for anyone who wants to say that throwing it here is stupid then I say cope and seethe xDD
