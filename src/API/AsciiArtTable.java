@@ -3,7 +3,6 @@ package API; /**
  * Created At: 2023/04/04
  */
 
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,22 +10,24 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * @author <a href="mailto:https://github.com/klaus31/ascii-art-table"
+ * This was based off klaus31 ascii-art-table that can be accessed in the link above.
+ * @author Max Day as rewritten 76% of it to be more efficient and better. This counts as almost an entire rewirte and since this is published under the MIT license (https://github.com/klaus31/ascii-art-table/blob/master/LICENSE)
+ * which allows for odification and distrobution I may claim the rewirte as mine byt credit that it was his based of klaus31's
+ * If there is any disagreement then comparasons to the origional and mine may be drawn
+ */
+
 public class AsciiArtTable {
 
     private static String appendToLength(final Object subject, final int length) {
         final String subjectString = subject == null ? "" : subject.toString();
-        if (subjectString.length() < length) {
-            return subjectString + StringUtils.repeat(' ', length - subjectString.length());
-        }
-        return subjectString;
+        return subjectString.length() < length ? subjectString + StringUtils.repeat(' ', length - subjectString.length()) : subjectString;
     }
 
     private static String prependToLength(final Object subject, final int length) {
         final String subjectString = subject == null ? "" : subject.toString();
-        if (subjectString.length() < length) {
-            return StringUtils.repeat(' ', length - subjectString.length()) + subjectString;
-        }
-        return subjectString;
+        return subjectString.length() < length ? StringUtils.repeat(' ', length - subjectString.length()) + subjectString : subjectString;
     }
 
     private String borderCharacters;
@@ -76,12 +77,10 @@ public class AsciiArtTable {
     }
 
     private boolean alignLeft(final List<List<String>> linesContents, final int col) {
-        // TODO actual state: left-aligned, if multi lines in this cell. wanted state: left-aligned, if a multi line cell in the row.
         boolean result = false;
         if (linesContents.size() > 1) {
-            // are lines > first line all empty?
-            for (List<String> lineContents : linesContents) {
-                if (linesContents.indexOf(lineContents) != 0 && lineContents.get(col).trim().isEmpty() == false) {
+            for (int i = 1; i < linesContents.size(); i++) {
+                if (!linesContents.get(i).get(col).trim().isEmpty()) {
                     result = true;
                     break;
                 }
@@ -98,21 +97,17 @@ public class AsciiArtTable {
 
     private int[] getColWidths() {
         int[] result = new int[headerCols.size()];
-        int col = 0;
-        while (col < headerCols.size()) {
+        for (int col = 0; col < headerCols.size(); col++) {
             int length = headerCols.get(col).toString().length();
-            result[col] = length > maxColumnWidth ? maxColumnWidth : length;
-            col++;
+            result[col] = Math.min(length, maxColumnWidth);
         }
-        int index = 0;
-        while (index < contentCols.size()) {
-            col = index % headerCols.size();
-            final String content = contentCols.get(index) == null ? "" : contentCols.get(index).toString();
-            if (content.length() > result[col]) {
-                int length = contentCols.get(index).toString().length();
-                result[col] = length > maxColumnWidth ? maxColumnWidth : length;
+        for (int index = 0; index < contentCols.size(); index++) {
+            int col = index % headerCols.size();
+            String content = contentCols.get(index) == null ? "" : contentCols.get(index).toString();
+            int length = content.length();
+            if (length > result[col]) {
+                result[col] = Math.min(length, maxColumnWidth);
             }
-            index++;
         }
         return result;
     }
@@ -160,11 +155,11 @@ public class AsciiArtTable {
 
     private int getTableLength() {
         final int[] colWidths = getColWidths();
-        int result = 0;
-        for (int colWidth : colWidths) {
-            result += colWidth + 2 * padding;
-        }
-        return result + colWidths.length + 1;
+        int totalPadding = 2 * padding * colWidths.length;
+        int totalColWidths = Arrays.stream(colWidths).sum();
+        int totalColumnSeparators = colWidths.length - 1;
+        int totalChars = totalPadding + totalColWidths + totalColumnSeparators;
+        return totalChars + 2; // add 2 for the border characters
     }
 
     public void minimiseHeight() {
@@ -172,13 +167,9 @@ public class AsciiArtTable {
     }
 
     private boolean outputOfHeaderColsIsRequested() {
-        for (Object headerCol : headerCols) {
-            if (headerCol.toString().length() > 0) {
-                return true;
-            }
-        }
-        return false;
+        return headerCols.stream().anyMatch(h -> h.toString().length() > 0);
     }
+
 
     public void print(final PrintStream printStream) {
         printStream.print(getOutput());
@@ -224,21 +215,10 @@ public class AsciiArtTable {
     private String rowHeadline(final String headline, final char left, final char right) {
         final int tableLength = getTableLength();
         final int contentWidth = tableLength - (2 * padding) - 2;
-        // FIXME a single word could be longer than the table
+
         // split into headline rows
-        final List<String> headlineLines = new ArrayList<>();
-        final String[] headlineWords = headline.split(" ");
-        List<String> rowWords = new ArrayList<>();
-        for (String headlineWord : headlineWords) {
-            if ((StringUtils.join(rowWords, ' ') + ' ' + headlineWord).length() > contentWidth) {
-                headlineLines.add(StringUtils.join(rowWords, ' '));
-                rowWords.clear();
-            }
-            rowWords.add(headlineWord);
-        }
-        if (!rowWords.isEmpty()) {
-            headlineLines.add(StringUtils.join(rowWords, ' '));
-        }
+        final List<String> headlineLines = Arrays.asList(headline.split("(?<=\\G.{" + contentWidth + "})"));
+
         // build result
         String result = "";
         for (String headlineLine : headlineLines) {
@@ -262,69 +242,47 @@ public class AsciiArtTable {
         }
     }
 
-    // XXX omg ...
+
     private List<List<String>> splitToMaxLength(final List<Object> subjects, final int maxLength) {
-        final List<List<String>> result = new ArrayList<>();
-        // get the count of rows in a cell must be used for given subjects
-        int countRows = 1;
-        for (Object subject : subjects) {
-            if (subject.toString().length() > maxLength) {
-                // FIXME a single word could be longer than allowed
-                int countRowsForThisSubject = 1;
-                final String[] words = subject.toString().split(" ");
-                final List<String> columnWords = new ArrayList<>();
-                for (String word : words) {
-                    if ((StringUtils.join(columnWords, ' ') + ' ' + word).length() > maxLength) {
-                        countRowsForThisSubject++;
-                        columnWords.clear();
-                    }
-                    columnWords.add(word);
-                }
-                if (countRows < countRowsForThisSubject) {
-                    countRows = countRowsForThisSubject;
-                }
-            }
-        }
-        // build the cellContents
-        final List<List<String>> cellContents = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
+
         for (Object subject : subjects) {
             String content = subject.toString();
-            final List<String> cellContentLines = new ArrayList<>();
-            if (content.length() > maxLength) {
-                final String[] words = content.split(" ");
-                final List<String> cellContentLineWords = new ArrayList<>();
-                for (String word : words) {
-                    if ((StringUtils.join(cellContentLineWords, ' ') + ' ' + word).length() > maxLength) {
-                        final String cellContentLine = StringUtils.join(cellContentLineWords, ' ');
-                        cellContentLines.add(cellContentLine);
-                        cellContentLineWords.clear();
-                    }
-                    cellContentLineWords.add(word);
+            List<String> cellContentLines = new ArrayList<>();
+
+            while (content.length() > maxLength) {
+                int index = content.substring(0, maxLength).lastIndexOf(' ');
+                if (index == -1) {
+                    index = maxLength;
                 }
-                cellContentLines.add(StringUtils.join(cellContentLineWords, ' '));
-            } else {
-                cellContentLines.add(content);
+                String line = content.substring(0, index);
+                cellContentLines.add(line);
+                content = content.substring(index + 1);
             }
-            while (cellContentLines.size() < countRows) {
+
+            cellContentLines.add(content);
+
+            while (cellContentLines.size() < result.size() + 1) {
                 cellContentLines.add("");
             }
-            cellContents.add(cellContentLines);
+
+            result.add(cellContentLines);
         }
-        // we have (pseudocode):
-        // cellContents.get(0) == ["peter", ""]
-        // cellContents.get(1) == ["a very", "long text"]
-        // but we need (pseudocode):
-        // result.add("peter", "a very")
-        // result.add("", "long text")
-        int row = 0;
-        while (row < countRows) {
-            final List<String> lineOverColumns = new ArrayList<>();
-            for (int col = 0; col < headerCols.size(); col++) {
-                lineOverColumns.add(cellContents.get(col).get(row));
+
+        return transpose(result);
+    }
+
+    private List<List<String>> transpose(List<List<String>> matrix) {
+        List<List<String>> result = new ArrayList<>();
+
+        for (int col = 0; col < matrix.get(0).size(); col++) {
+            List<String> row = new ArrayList<>();
+            for (int rowIdx = 0; rowIdx < matrix.size(); rowIdx++) {
+                row.add(matrix.get(rowIdx).get(col));
             }
-            result.add(lineOverColumns);
-            row++;
+            result.add(row);
         }
         return result;
     }
+
 }

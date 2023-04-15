@@ -32,30 +32,9 @@ public class Main {
              */
 
 
-
             MainPage mainPage = new MainPage();
             mainPage.mainPage();
 
-
-            //  try {
-            //    System.out.println(deepEncrypt.valid("Max","max"));
-            //   } catch (Exception e) {
-            //        throw new RuntimeException(e);
-            //    }
-
-
-            //    AsciiArtTable aat = new AsciiArtTable();
-            //      aat.addHeaderCols("title","task name","due date", "has been completed");
-
-            //    aat.add("test 1"," soemthing ghere ","ndbwkdnaw"," ahghhhh" );
-            //  aat.add(1, 2, 3., "a very long thing");
-            // have a visual impression (not part of the test)
-            //    aat.print(System.out);
-
-
-            //  FileManager fManager = new FileManager();
-            //      fManager.createDirectory();
-            //     fManager.writeFile(aat.getOutput());
 
         } catch (Exception e) {
             throw new RuntimeException(e);
