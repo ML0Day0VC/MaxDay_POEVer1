@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class deepEncrypt {
 
-    public static void genNewUser(String uName, String uPassword, String fName, String sName, String dOB) throws Exception {
+    public static void registerUser(String uName, String uPassword, String fName, String sName, String dOB) throws Exception {
         System.out.println("Wrote password");
         new FileManager().addEntry(String.format("%s|%s|%s|%s|%s", uName, generateStorngPasswordHash(uPassword), fName, sName, dOB));
         new FileManager().createTBLManager(uName);
@@ -43,11 +43,10 @@ public class deepEncrypt {
             String s = scanner.next();
             if (s.contains(inUser)) { //username found
                 if (validatePassword(inPass, s.split("\\|")[1])) {
-                    System.out.println("Password correct. Logged into account.");
-
+                    System.out.println(String.format("Welcome %s ,%s it is great to see you again.", s.split("\\|")[2], s.split("\\|")[3]));
                     return true;
                 } else {
-                    System.err.println("Incorrect login or password ");
+                    System.err.println("Username or password incorrect, please try again");
                     return false;
                 }
             }

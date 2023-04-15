@@ -72,7 +72,7 @@ public class MainPage extends Thread {
                                 > exit - exits the program""");
                         break;
                     case "table":
-                        if (!lm.getSignedIn()) {
+                        if (!lm.returnLoginStatus()) {
                             System.err.println("User is not logged in. Please Sign in before continuing");
                             break;
                         }
@@ -143,11 +143,11 @@ public class MainPage extends Thread {
                         }
 
                     case "login":
-                        if (lm.getSignedIn()) {
-                            System.err.println("Another API.Entities.User is already signed in. Please Sign out before continuing");
+                        if (lm.returnLoginStatus()) {
+                            System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
-                        lm.login();
+                        lm.loginUser();
                         Collection<Object> values = cache.values();
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT); // extracting from cache
 
@@ -166,24 +166,17 @@ public class MainPage extends Thread {
                         String dOB = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
+                        if(!lm.checkUserName(uName)){
+                            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\n\t Process has been canceled");
+                            break;
+                        }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass(">");
-                        /**
-                         * ^: asserts that the string starts at the beginning.
-                         * (?=.*[a-z]): a positive lookahead that asserts that the string contains at least one lowercase letter (a-z).
-                         * (?=.*[A-Z]): a positive lookahead that asserts that the string contains at least one uppercase letter (A-Z).
-                         * (?=.*\d): a positive lookahead that asserts that the string contains at least one digit (0-9).
-                         * [a-zA-Z\d]{8,}: matches any character that is a lowercase letter, an uppercase letter, or a digit, and requires that the length of the string is at least 8 characters.
-                         * $: asserts that the string ends at this point.
-                         */
-
-                        //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
-                        Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");// this thing caused me so much suffering im actually going to cry it's so late rn
-                        if (pRegex.matcher(uPassword).matches()) {
-                            deepEncrypt.genNewUser(uName, uPassword, fName, sName, dOB);
-                            System.out.println("New API.Entities.User Created\nPlease Sign in if you want to continue");
+                       if(lm.checkPasswordComplexity(uPassword)){
+                            deepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
+                            System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else
-                            System.out.println("The password does not contain the required characters and numbers\n\t Process has been canceled");
+                            System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled");
                         break;
                     case "exit":
                         System.exit(420);
