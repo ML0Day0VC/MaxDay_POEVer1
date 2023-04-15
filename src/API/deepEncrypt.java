@@ -45,8 +45,7 @@ public class deepEncrypt {
         Scanner scanner = new Scanner(fileManager.readFile());
         while (scanner.hasNextLine()) {
             String s = scanner.next();
-            if (s.contains(inUser)) {
-                System.out.println("Username Found");
+            if (s.contains(inUser)) { //username found
                 uInfo = s.split("\\|");
                 if (validatePassword(inPass, uInfo[1])) {
                     System.out.println("Password correct. Logged into account.");

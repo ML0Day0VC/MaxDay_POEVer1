@@ -9,6 +9,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.json.simple.JSONValue.parse;
 
@@ -24,22 +27,91 @@ public class TableManager {
         return new String[]{String.valueOf(taskId), taskName, taskDescription, date, (status ? "✓" : "☐")};
     }
 
-    public static void table() {
+
+    public static void genTable() throws Exception {
+
+        //TODO: what the fuck is a table at this point this is like cpome on man im loosing my mind at how todo this without loosing my mind
+
+
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = new JSONArray();
+
+        FileReader reader = new FileReader("src/tables/maxTable.json"); // ik u can throw this into a try catch im not dumb im just lazy
+
+        Object obj = parser.parse(reader);
+        if (obj instanceof JSONArray)
+            jsonArray = (JSONArray) obj;
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
+        for (Object objs : jsonArray) {
+            String str = objs.toString();
+            System.out.println();
+
+            JSONObject jsonObject = (JSONObject) objs;
+            long num = (long) jsonObject.get("num");
+            String nTask = (String) jsonObject.get("nTask");
+            String dTask = (String) jsonObject.get("dTask");
+            String date = (String) jsonObject.get("date");
+            boolean isCompleted = (boolean) jsonObject.get("isCompleated");
+            aat.add(num, nTask, dTask, date, (isCompleted ? "✓" : "X"));
+
+                    }
+
+    }
+
+
+
+    // uncommented crap. for some reason i rly struggled with converting the JSOnArray to a string for whatever reason it is literally hell
+
+
+
+      //  System.out.println(aat.getOutput());
+        // String[] stringArray = jsonArray.subList(new String[0]);
+        //toArray(new String[0]);
+
+
+        //   for (String s : stringArray) {
+        //       System.out.println(s);
+        //   }
+
+        //String[] arr = jsonArray.toString().replace("},{", " ,").split(",");     // please dont murder me its such a bad way of doing it but it works
+/*
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            list.add(jsonArray.toString());
+        }
+        String[] stringArray = list.toArray(new String[list.size()]);
+
+ */
+
+/*
+        for (int i = 0; i < stringArray.length; i++) {
+            System.out.println(stringArray[i]);
+            System.out.println();
+        }
+
 
         // gotta make a format for this so we can tick stuff off and remove it and more but its gonna be kinda dumb
-
+/*
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("src/tables/maxTable.json")) {
+        try {
 
 
-            Object obj = jsonParser.parse(reader);
-            JSONArray taskList = (JSONArray) obj;
-            //taskList.add(obj);
+            FileManager fileManager = new FileManager();
 
+            String s = fileManager.readFile("src/tables/maxTable.json");
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(s);
 
+            JSONArray taskList = new JSONArray();
+            taskList.add(obj);
+*/
 
+        // Object obj = jsonParser.parse(reader);
+        //  JSONArray taskList = (JSONArray) obj;
+        //taskList.add(obj);
 
-            // taskList.forEach(emp -> parseTaskObject((JSONObject) emp));
+        // taskList.forEach(emp -> parseTaskObject((JSONObject) emp));
 /*
             taskList.forEach(item -> {
                 JSONObject ob = (JSONObject) item;
@@ -50,13 +122,13 @@ public class TableManager {
  */
 
 
-            AsciiArtTable aat = new AsciiArtTable();
-            // aat.addHeaderCols("title", "task name", "due date", "has been completed");
+        // AsciiArtTable aat = new AsciiArtTable();
+        // aat.addHeaderCols("title", "task name", "due date", "has been completed");
 
 
-            aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
-            // aat.add(00, "This is the name of a task that has set up ", "This is a random task with a random description that can be anything ", "date", " ☐ ✓ ");
-
+        //   aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
+        // aat.add(00, "This is the name of a task that has set up ", "This is a random task with a random description that can be anything ", "date", " ☐ ✓ ");
+/*
 
             for (Object o : taskList) {
                 JSONObject jsonLineItem = (JSONObject) o;
@@ -71,14 +143,24 @@ public class TableManager {
 
             });
 
+/*
+    public static String[] toStringArray(JSONArray array) {
+        if(array==null)
+            return new String[0];
+
+        String[] arr=new String[array.length()];
+        for(int i=0; i<arr.length; i++) {
+            arr[i]=array.optString(i);
+        }
+        return arr;
+    }
+
  */
 
-            aat.print(System.out);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
 
 
         // System.out.println(genRow(1,"order the package", "the package number is 288271672", "29/27/16262",false));
@@ -114,7 +196,7 @@ public class TableManager {
  */
 
 
-}
+
 
 /**
  * {

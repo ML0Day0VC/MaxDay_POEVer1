@@ -1,11 +1,23 @@
-{
-  "task": [
-    {
-      "num": 1,
-      "nTask": "Name of our task",
-      "dTask": "This is the description of the task",
-      "date": "22/22/2003",
-      "isCompleated": false
-    }
-  ]
-}
+[
+  {
+    "num": 1,
+    "nTask": "Name of our task",
+    "dTask": "This is the description of the task",
+    "date": "22/22/2003",
+    "isCompleated": false
+  },
+  {
+    "num": 2,
+    "nTask": "Name of our task",
+    "dTask": "This is the description of the task",
+    "date": "22/22/2003",
+    "isCompleated": false
+  },
+  {
+    "num": 3,
+    "nTask": "Name of our task",
+    "dTask": "This is the description of the task",
+    "date": "22/22/2003",
+    "isCompleated": false
+  }
+]
