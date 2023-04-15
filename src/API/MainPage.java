@@ -5,6 +5,8 @@
 package API;
 
 
+import API.Entities.User;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +15,7 @@ import java.util.Locale;
 
 
 public class MainPage extends Thread {
+    private static User user;
 
     private static boolean stopped = false;
 
@@ -74,6 +77,7 @@ public class MainPage extends Thread {
 
 
 
+
             LoginManager lm = new LoginManager();
             FileManager fm = new FileManager();
             System.out.println("Please type help for more information");
@@ -93,10 +97,24 @@ public class MainPage extends Thread {
                                 > signup - allows the user to create a new acoount
                                 > exit - exits the program""");
                         break;
-                    case "display":
+                    case "table":
 
-                     //   TableManager tableManager = new TableManager();]
-                     //   tableManager.genTable();
+                       TableManager tableManager = new TableManager();
+
+                       tableManager.genTable("max");
+
+
+                      // tableManager.removeItem("max",2);
+                       // tableManager.genTable("max");
+
+                       //     tableManager.addItem("max","this is a new task", "idk this could work its not clear at this point " , "22/33/2343",false);
+
+
+                    //   tableManager.edit("max",1, 2, "new task descritmkawdl");
+
+
+                      //  tableManager.genTable("max");
+
 
 
 
@@ -111,7 +129,6 @@ public class MainPage extends Thread {
                             break;
                         }
                         lm.login();
-
 
                         break;
                     case "logout":

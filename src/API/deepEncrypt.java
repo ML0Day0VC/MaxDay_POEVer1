@@ -51,7 +51,7 @@ public class deepEncrypt {
                 if (validatePassword(inPass, uInfo[1])) {
                     System.out.println("Password correct. Logged into account.");
                     //TODO: im going to regret storing the enypted password i can feel it lmao
-                   new User(uInfo[0], uInfo[1], uInfo[2], uInfo[3],uInfo[4]);
+                    new User(uInfo[0], uInfo[1], uInfo[2], uInfo[3],uInfo[4]);
                     return true;
                 } else {
                     System.err.println("Incorrect login or password ");
