@@ -4,8 +4,6 @@
  */
 package API;
 
-import API.Entities.User;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.io.IOException;
@@ -17,13 +15,11 @@ import java.util.Scanner;
 
 
 /**
- * TODO: make sure to only allow certain characters in usernames and passwords
  * Author: Max Day
  * Adapted form oracle docs
  */
 
 public class deepEncrypt {
-    private static String[] uInfo = null; //TODO u can use a get user here so u can retrun it maybe in the password checker but the cache idea is just so much more based lmfao
 
     public static void genNewUser(String uName, String uPassword, String fName, String sName, String dOB) throws Exception {
         System.out.println("Wrote password");
@@ -46,11 +42,9 @@ public class deepEncrypt {
         while (scanner.hasNextLine()) {
             String s = scanner.next();
             if (s.contains(inUser)) { //username found
-                uInfo = s.split("\\|");
-                if (validatePassword(inPass, uInfo[1])) {
+                if (validatePassword(inPass, s.split("\\|")[1])) {
                     System.out.println("Password correct. Logged into account.");
-                    //TODO: im going to regret storing the enypted password i can feel it lmao
-                    new User(uInfo[0], uInfo[1], uInfo[2], uInfo[3],uInfo[4]);
+
                     return true;
                 } else {
                     System.err.println("Incorrect login or password ");

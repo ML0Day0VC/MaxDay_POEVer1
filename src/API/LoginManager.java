@@ -6,9 +6,6 @@ package API;
 
 import java.io.*;
 
-/**
- * TODO: I CANT USE THE FCING COORS OF THE CONSOLE WHEN I AM USING THE FUCKING CONSOLE AND I HAVE TO FOR THE INTELLJ BUG OMGGGG
- */
 public class LoginManager {
     private static boolean isSignedIn = false;
 

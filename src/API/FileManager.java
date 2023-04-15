@@ -14,6 +14,10 @@ import java.nio.file.Paths;
 import java.util.Locale;
 
 public class FileManager {
+    public enum type {
+        PASSWORDS, TABLES
+    }
+
     private static final String PATH = "passwords.txt";
     //TODO: please fix this its so bad omg
     private File file = new File(PATH);
@@ -30,6 +34,7 @@ public class FileManager {
         fWriter.write(data);
         fWriter.close();
     }
+
 
     public String readFile() throws IOException {
         return Files.readString(Paths.get(PATH));
@@ -54,7 +59,7 @@ public class FileManager {
 
     //////TBLManager//////
 
-//TODO PLEASE IF U SEE THIS DO THIS PLEASEEEEEEEEE
+    //TODO PLEASE IF U SEE THIS DO THIS PLEASEEEEEEEEE
     public void updateTBLManager(String data) throws IOException {
 
     }
