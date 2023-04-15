@@ -98,10 +98,7 @@ public class MainPage extends Thread {
 
                         //TODO:check if user is logged in
                         TableManager tableManager = new TableManager();
-
-
                         System.out.println("Table View:\n\n");
-
                         String testName = "max";
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {

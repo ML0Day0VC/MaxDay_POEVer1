@@ -5,9 +5,9 @@
 
 import java.util.HashMap;
 
-public class testCache {
+public class CacheVal {
     private static HashMap<String, Object> cache = new HashMap<>();
-    public static Object getValue(String key) {
+    public static Object value(String key) {
         Object value = cache.get(key);
         if (value == null) {
             value = retrieveValueFromSource(key);
@@ -15,13 +15,18 @@ public class testCache {
         }
         return value;
     }
+
+
+               /* u can actuallly write it as this but im too lazy for it this is so basic honeslty
+    public static Object value(String key) {
+    return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
+}
+
+     */
+
+
     private static Object retrieveValueFromSource(String key) {
-        System.out.println("Retrieving value for key: " + key);
         return key.toUpperCase();
     }
-    public static void main(String[] args) {
-        String key = "random cache lel";
-        System.out.println(getValue(key));
-        System.out.println(getValue(key));
-    }
+
 }
