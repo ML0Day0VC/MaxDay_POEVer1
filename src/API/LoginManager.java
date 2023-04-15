@@ -16,9 +16,10 @@ public class LoginManager {
         System.out.println("Please Enter Username");
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
-        if (deepEncrypt.valid(uName, readMaskedPass(">")))
+        if (deepEncrypt.valid(uName, readMaskedPass(">"))) {
+            MainPage.value(uName); // cache the name that's logged in lol
             setIsSignedIn(true);
-        else
+        }else
             System.out.println("Unknown username or password. Please check your credentials and try again");
     }
 

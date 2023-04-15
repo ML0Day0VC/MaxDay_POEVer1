@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,13 +19,32 @@ import java.util.regex.Pattern;
 
 public class MainPage extends Thread {
     private static User user;
-
+    private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
 
-    public MainPage() {
-
+    public MainPage() { // cant remember why this exists tbh
     }
 
+    /**
+     * Cache lets goo this is so badly made but its nice and funny so its fine
+     *
+     * @param key
+     * @return
+     */
+    public static Object value(String key) {
+        Object value = cache.get(key);
+        if (value == null) {
+            value = retrieveValueFromSource(key);
+            cache.put(key, value);
+        }
+        return value;
+    }
+
+    private static Object retrieveValueFromSource(String key) {
+        return key.toUpperCase();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
     public static void mainPage() throws IOException {
         welcome();
         new MainPage();
@@ -37,45 +57,6 @@ public class MainPage extends Thread {
     public void start() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-
-            /*    System.out.println("Starting...");
-                System.out.println("Please State weather you want to login or register as a new user");
-                String inLR = reader.readLine();
-                if (!inLR.isEmpty()) {
-
-                }
-                System.out.println("Please enter the server port, the default is 8888, press Enter to end the input:");
-                String port = reader.readLine();
-                if (!port.isEmpty()) {
-                    config.setServerPort(Integer.parseInt(port));
-                }
-                System.out.println("Please enter the file path for the database, the default is 'database.accdb', press Enter to end the input:");
-                String databasePath = reader.readLine();
-                if (!databasePath.isEmpty()) {
-                    config.setDatabasePath(databasePath);
-                }
-                System.out.println("Configuration complete");
-                config.setConfigured(true);
-                config.save();
-                return;
-                */
-
-
-            /**
-             * options
-             * login
-             * signup
-             * stop
-             * display
-             * signout
-             *
-             */
-
-
-            /**
-             * TODO: The best way todo this is to have 2 method layers one for logging in and stuff and then have another one embed into it so that it can be used without the random other tools like loging in when your already logged in.
-             */
-
 
             LoginManager lm = new LoginManager();
             FileManager fm = new FileManager();
@@ -170,6 +151,11 @@ public class MainPage extends Thread {
                         }
                         lm.login();
 
+                        String[] valuesArray = cache.values().toArray(new String[0]);
+
+                        for (String value : valuesArray) {
+                            System.out.println(value);
+                        }
                         break;
                     case "signup":
 
@@ -187,7 +173,6 @@ public class MainPage extends Thread {
                         String uName = reader.readLine();
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass(">");
-
                         /**
                          * ^: asserts that the string starts at the beginning.
                          * (?=.*[a-z]): a positive lookahead that asserts that the string contains at least one lowercase letter (a-z).
@@ -196,10 +181,10 @@ public class MainPage extends Thread {
                          * [a-zA-Z\d]{8,}: matches any character that is a lowercase letter, an uppercase letter, or a digit, and requires that the length of the string is at least 8 characters.
                          * $: asserts that the string ends at this point.
                          */
+
                         //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
-                        Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+                        Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");// this thing caused me so much suffering im actually going to cry it's so late rn
                         if (pRegex.matcher(uPassword).matches()) {
-                            //password is valid
                             deepEncrypt.genNewUser(uName, uPassword, fName, sName, dOB);
                             System.out.println("New API.Entities.User Created\nPlease Sign in if you want to continue");
                         } else
@@ -217,7 +202,6 @@ public class MainPage extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void welcome() {
