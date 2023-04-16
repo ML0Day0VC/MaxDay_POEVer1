@@ -1,6 +1,6 @@
 /**
  * @author Max Day
- * Created At: 2023/04/04
+ * Created At: 2021/09/07
  */
 package API;
 
@@ -16,7 +16,8 @@ import java.util.Scanner;
 
 /**
  * Author: Max Day
- * Adapted form oracle docs
+ * This was adapted from a marked project PAT that was done when I was in highs-cool. It was meant for SQL Server logins as a backend type server. I have adapted it to work with this.
+ * The concept was derived from the Oracle Documentation and I have a full explanation on how it works. I have left the old comments to keep the origionality of the code
  */
 
 public class deepEncrypt {
@@ -45,10 +46,8 @@ public class deepEncrypt {
                 if (validatePassword(inPass, s.split("\\|")[1])) {
                     System.out.println(String.format("Welcome %s ,%s it is great to see you again.", s.split("\\|")[2], s.split("\\|")[3]));
                     return true;
-                } else {
-                    System.err.println("Username or password incorrect, please try again");
+                } else
                     return false;
-                }
             }
         }
         return false;

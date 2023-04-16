@@ -31,6 +31,12 @@ public class testThing {
 
 
         public static void main(String[] args) {
+
+                String s = "[max]";
+                        System.out.println(s.substring(1, s.length() -1));
+
+
+
             String input = "The quick brown fox jumps over the lazy dog";
             Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");//123456M$       https://regex101.com amazingsite
                        if (pRegex.matcher("this&hM1").matches()) {

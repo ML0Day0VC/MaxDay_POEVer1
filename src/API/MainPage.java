@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class MainPage extends Thread {
     private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
+    private static String currentUserFromCache = "";
 
     public MainPage() { // cant remember why this exists tbh
     }
@@ -53,15 +54,14 @@ public class MainPage extends Thread {
     public void start() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-
             LoginManager lm = new LoginManager();
-            FileManager fm = new FileManager();
             System.out.println("Please type help for more information");
             while (!stopped) {
                 String[] string = reader.readLine().split(" ");
                 if (string.length <= 0) {
                     continue;
                 }
+
                 switch (string[0].toLowerCase(Locale.ROOT)) {
                     case "?":
                     case "help": //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
@@ -78,7 +78,6 @@ public class MainPage extends Thread {
                         }
                         TableManager tableManager = new TableManager();
                         System.out.println("Table View:\n\n");
-                        String currentUserFromCache = "";
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
                             switch (reader.readLine()) {
@@ -133,6 +132,7 @@ public class MainPage extends Thread {
                                         tableManager.removeItem(currentUserFromCache, var4);
                                     break;
                                 case "logout":
+                                case "signout":
                                     System.out.println("API.Entities.User is now logged out");
                                     lm.setIsSignedIn(false);
                                     isStoppedTable = true;
@@ -141,18 +141,20 @@ public class MainPage extends Thread {
                                     //TODO add info to default
                             }
                         }
-
+                        break;
                     case "login":
+                    case "signin":
                         if (lm.returnLoginStatus()) {
                             System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
                         lm.loginUser();
                         Collection<Object> values = cache.values();
-                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT); // extracting from cache
+                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
 
                         break;
                     case "signup":
+
 
                         /**
                          * TODO: i really wanna make something that prevents idiots from entering blank values like if they hit enter before they have done there stuff idk
@@ -166,13 +168,13 @@ public class MainPage extends Thread {
                         String dOB = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
-                        if(!lm.checkUserName(uName)){
+                        if (!lm.checkUserName(uName)) {
                             System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\n\t Process has been canceled");
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass(">");
-                       if(lm.checkPasswordComplexity(uPassword)){
+                        if (lm.checkPasswordComplexity(uPassword)) {
                             deepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else

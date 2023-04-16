@@ -35,7 +35,7 @@ public class LoginManager {
 
 
     public boolean checkUserName(String userName) {
-        Pattern uRegex = Pattern.compile("^.{0,5}_.*$");// TODO: explain this fully
+        Pattern uRegex = Pattern.compile("^.{0,4}_.*$");// TODO: explain this fully
         return uRegex.matcher(userName).matches();
 
     }
@@ -69,43 +69,6 @@ public class LoginManager {
         String password = "";
         password = in.readLine();
         et.stopMasking();
-        return password; //TODo; need to adda validate password for the criteria sobbing face
+        return password;
     }
 }
-/*
-
-    public static String testmaskPassword() throws Exception {
-        System.out.print("Enter your password: ");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String password = "";
-        try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                char[] chars = line.toCharArray();
-                for (int i = 0; i < chars.length; i++) {
-                    char c = chars[i];
-                    if (c == '\r' || c == '\n') {
-                        break;
-                    } else if (c == '\b' && password.length() > 0) {
-                        password = password.substring(0, password.length() - 1);
-                        System.out.print("\b \b");
-                    } else {
-                        password += c;
-                        System.out.print("*");
-                    }
-                }
-                if (password.length() > 0) {
-                    break;
-                }
-            }
-            System.out.println("\nPassword entered: " + password);
-        } finally {
-            password = null;
-        }
-
-   return password;
-    }
-
-
-
- */

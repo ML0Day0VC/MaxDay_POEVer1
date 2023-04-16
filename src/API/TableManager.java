@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Locale;
 
 public class TableManager {
 
@@ -25,7 +26,7 @@ public class TableManager {
     }
 
     public static JSONArray getArray(String path) throws Exception {
-        FileReader reader = new FileReader("src/tables/" + path + "Table.json"); // ik u can throw this into a try catch im not dumb im just lazy
+        FileReader reader = new FileReader("src/tables/" + path.toLowerCase(Locale.ROOT) + "Table.json"); // ik u can throw this into a try catch im not dumb im just lazy
         Object obj = new JSONParser().parse(reader);
         if (obj instanceof JSONArray)
             return (JSONArray) obj;
@@ -33,7 +34,6 @@ public class TableManager {
     }
 
     public static void genTable(String uName) throws Exception {
-        //TODO: what the fuck is a table at this point this is like come on man im loosing my mind at how todo this without loosing my mind
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
@@ -96,7 +96,5 @@ public class TableManager {
         fileWriter.write(data);
         fileWriter.flush();
         fileWriter.close();
-        System.out.println("JSON object written to file successfully.");
-
     }
 }
