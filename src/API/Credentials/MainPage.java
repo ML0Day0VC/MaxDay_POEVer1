@@ -1,8 +1,9 @@
-/**
+package API.Credentials; /**
  * @author Max Day
  * Created At: 2023/04/05
  */
-package API;
+
+import API.Table.TableManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,10 +15,8 @@ public class MainPage extends Thread {
     private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
     private static String currentUserFromCache = "";
-
     public MainPage() {
     }
-
     /**
      * Cache lets goo this is so badly made but its nice and funny so its fine
      *
@@ -39,11 +38,9 @@ public class MainPage extends Thread {
     return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
     }
      */
-
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
-
     ///////////////////////////////////////////////////////////////////////////////
     public static void mainPage() {
         welcome();
@@ -176,7 +173,7 @@ public class MainPage extends Thread {
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass();
                         if (lm.checkPasswordComplexity(uPassword)) {
-                            deepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
+                            DeepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else
                             System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled");
@@ -189,23 +186,18 @@ public class MainPage extends Thread {
                 }
             }
             System.out.println("Stopped");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void welcome() {
-
         System.out.println("\u001b[32m\n _    _      _                             _           _____  _     _____ _                 \n" +
                 "| |  | |    | |                           | |         /  __ \\| |   |_   _| |                \n" +
                 "| |  | | ___| | ___ ___  _ __ ___   ___   | |_ ___    | /  \\/| |     | | | |__   __ _ _ __  \n" +
                 "| |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\  | __/ _ \\   | |    | |     | | | '_ \\ / _` | '_ \\ \n" +
                 "\\  /\\  /  __/ | (_| (_) | | | | | |  __/  | || (_) |  | \\__/\\| |_____| |_| |_) | (_| | | | |\n" +
                 " \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|   \\__\\___/    \\____/\\_____/\\___/|_.__/ \\__,_|_| |_|\n" +
-                "                                                                                            \n" +
                 "                                                                                            \n");
-
     }
-
 }

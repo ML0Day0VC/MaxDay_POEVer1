@@ -1,4 +1,4 @@
-package API; /**
+package API.Table; /**
  * @author Max Day
  * Created At: 2023/04/04
  */

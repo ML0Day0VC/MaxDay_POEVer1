@@ -2,7 +2,7 @@
  * @author Max Day
  * Created At: 2023/04/05
  */
-package API;
+package API.Table;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -91,7 +91,7 @@ public class TableManager {
         update(uName, jsonArray.toJSONString());
     }
     public void update(String path, String data) throws Exception { //
-        FileWriter fileWriter = new FileWriter("src/tables/" + path + "Table.json");
+        FileWriter fileWriter = new FileWriter("src/Tables/" + path + "Table.json");
         fileWriter.write(data);
         fileWriter.flush();
         fileWriter.close();

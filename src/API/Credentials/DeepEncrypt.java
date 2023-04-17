@@ -2,7 +2,9 @@
  * @author Max Day
  * Created At: 2021/09/07
  */
-package API;
+package API.Credentials;
+
+import API.Tools.FileManager;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -20,7 +22,7 @@ import java.util.Scanner;
  * The concept was derived from the Oracle Documentation and I have a full explanation on how it works. I have now decided to rewrite it slightly.
  */
 
-public class deepEncrypt {
+public class DeepEncrypt {
 
     public static void registerUser(String uName, String uPassword, String fName, String sName, String dOB) throws Exception {
         String entry = String.format("%s|%s|%s|%s|%s", uName, generateStorngPasswordHash(uPassword), fName, sName, dOB);

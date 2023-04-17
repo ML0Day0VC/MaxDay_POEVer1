@@ -2,7 +2,7 @@
  * @author Max Day
  * Created At: 2023/04/05
  */
-package API;
+package API.Credentials;
 
 class EraserThread implements Runnable {
     private volatile boolean stop;

@@ -1,6 +1,4 @@
-import API.*;
-
-import java.io.IOException;
+import API.Credentials.MainPage;
 
 public class Main {
     public static void main(String[] args) {

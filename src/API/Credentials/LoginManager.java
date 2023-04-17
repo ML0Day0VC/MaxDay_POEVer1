@@ -2,20 +2,24 @@
  * @author Max Day
  * Created At: 2023/04/04
  */
-package API;
+package API.Credentials;
+
+import API.Credentials.EraserThread;
+
 
 import java.io.*;
 import java.util.regex.Pattern;
 
 public class LoginManager {
     private static boolean isSignedIn = false;
-
-    public static void loginUser() throws Exception {
+       public static void loginUser() throws Exception {
         System.out.println("Please Enter Username");
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
+
+
         MainPage.value(uName); // cache the name that's logged in
-        if (deepEncrypt.valid(uName, readMaskedPass())) {
+        if (DeepEncrypt.valid(uName, readMaskedPass())) {
             setIsSignedIn(true);
         } else
             System.out.println("Unknown username or password. Please check your credentials and try again");
@@ -73,4 +77,6 @@ public class LoginManager {
         et.stopMasking();
         return password;
     }
+
+
 }
