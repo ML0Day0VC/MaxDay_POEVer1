@@ -1,7 +1,9 @@
-package API.Credentials; /**
+/**
  * @author Max Day
  * Created At: 2023/04/05
  */
+
+package API.Credentials;
 
 import API.Table.TableManager;
 
@@ -15,8 +17,10 @@ public class MainPage extends Thread {
     private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
     private static String currentUserFromCache = "";
+
     public MainPage() {
     }
+
     /**
      * Cache lets goo this is so badly made but its nice and funny so its fine
      *
@@ -31,16 +35,18 @@ public class MainPage extends Thread {
         }
         return value;
     }
-      /*
-      u can actually write it as this but im too lazy for it this is so basic honesty
 
-    public static Object value(String key) {
-    return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
-    }
-     */
+    /*
+    u can actually write it as this but im too lazy for it this is so basic honesty
+
+  public static Object value(String key) {
+  return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
+  }
+   */
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
+
     ///////////////////////////////////////////////////////////////////////////////
     public static void mainPage() {
         welcome();
@@ -133,7 +139,7 @@ public class MainPage extends Thread {
                                     break;
                                 case "logout":
                                 case "signout":
-                                    System.out.println("API.Entities.User is now logged out");
+                                    System.out.println("User is now logged out");
                                     LoginManager.setIsSignedIn(false);
                                     isStoppedTable = true;
                                     break;

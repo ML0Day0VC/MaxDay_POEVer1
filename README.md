@@ -1,9 +1,56 @@
 # MaxDay_POEVer1
 
-My first version of my POE thing 
+## About
 
-This is just gonna be used to track changes for now. 
+This project is generally overcomplicated but I decided this approach to test how much I know. Some of the code such as the DeepEncrypt algo was written by me in 2021 and I have reused it to improve it and see how much I have improved.
 
-This project is so over complicated because why not it might aswell just test how much I can do 
+## File breakdown
 
-![save me pleaseee](https://media.discordapp.net/attachments/835627135905431594/1096934952781758574/image.png)
+```text
+src:
+│
+│   Main.java
+│   testThing.java
+│
+├───API
+│   ├───Credentials
+│   │       DeepEncrypt.java
+│   │       EraserThread.java
+│   │       LoginManager.java
+│   │       MainPage.java
+│   │
+│   ├───Table
+│   │       AsciiArtTable.java
+│   │       TableManager.java
+│   │
+│   └───Tools
+│           FileManager.java
+│
+└───Tables
+        kyl_1Table.json
+        maxTable.json
+```
+
+## Commands:
+
+There are two sets of commands. One before you login and one after you have logged in.
+
+### Pre-Login:
+    - help - displays this page
+    - login - provides page for user login    
+    - signup - allows the user to create a new account
+    - exit - exits the program
+
+### Post-Login
+    - help - displays this page
+    - display - shows the updated table
+    - add - adds info to the table
+    - edit - edits the table 
+    - remove - removes an entry from the table
+    - logout - logs out the user
+
+## Credits:
+
+  [klaus31 for origional Ascii-Art-Table](https://github.com/klaus31/ascii-art-table)
+
+
