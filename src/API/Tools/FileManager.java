@@ -16,24 +16,17 @@ public class FileManager {
     /**
      * @apiNote If anyone is looking at this file im sorry i just needed a miscellaneous class to chuck some file stuff in
      */
-
     private static final String PATH = "passwords.txt";
 
-    //TODO: please fix this its so bad omg
-    public void writeFile(String data) throws IOException { // for anyone who wants to say that throwing it here is stupid then I say cope and seethe xDD
+    public void writeFile(String data) throws IOException { // for anyone who wants to say that throwing it here is stupid then I say cope
         FileWriter fWriter = new FileWriter(PATH);
         fWriter.write(data);
         fWriter.close();
     }
 
-
     public String readFile() throws IOException {
         return Files.readString(Paths.get(PATH));
     }
-
-    /**
-     * TODO: add remove entry aswell
-     */
     public void addEntry(String entry) throws IOException {
         String s = readFile();
         if (s.contains(entry.split("\\|")[0] + "|")) {

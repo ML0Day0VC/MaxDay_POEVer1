@@ -23,31 +23,17 @@ public class MainPage extends Thread {
 
     /**
      * Cache lets goo this is so badly made but its nice and funny so its fine
-     *
+     * This is such a good way of doing this i think its the simplest but im rly not sure
      * @param key
      * @return
      */
     public static Object value(String key) {
-        Object value = cache.get(key);
-        if (value == null) {
-            value = retrieveValueFromSource(key);
-            cache.put(key, value);
-        }
-        return value;
+        return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
     }
-
-    /*
-    u can actually write it as this but im too lazy for it this is so basic honesty
-
-  public static Object value(String key) {
-  return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
-  }
-   */
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
     public static void mainPage() {
         welcome();
         new MainPage();
@@ -63,12 +49,10 @@ public class MainPage extends Thread {
             LoginManager lm = new LoginManager();
             System.out.println("Please type help for more information");
             while (!stopped) {
-                String[] string = reader.readLine().split(" ");
-                if (string.length <= 0) {
+                String[] strInput = reader.readLine().split(" ");
+                if (strInput.length <= 0)
                     continue;
-                }
-
-                switch (string[0].toLowerCase(Locale.ROOT)) {
+                switch (strInput[0].toLowerCase(Locale.ROOT)) {
                     case "?":
                     case "help": //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
                         System.out.println("""
@@ -102,8 +86,7 @@ public class MainPage extends Thread {
                                     break;
                                 case "add":
                                     String[] str = new String[4];
-                                    System.out.println("Please prepare to enter the data for the new entry");
-                                    System.out.println("Please enter the name of the task");
+                                    System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task");
                                     str[0] = reader.readLine();
                                     System.out.println("Please enter the description of the task");
                                     str[1] = reader.readLine();

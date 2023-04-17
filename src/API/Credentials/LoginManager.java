@@ -4,20 +4,16 @@
  */
 package API.Credentials;
 
-import API.Credentials.EraserThread;
-
-
 import java.io.*;
 import java.util.regex.Pattern;
 
 public class LoginManager {
     private static boolean isSignedIn = false;
-       public static void loginUser() throws Exception {
+
+    public static void loginUser() throws Exception {
         System.out.println("Please Enter Username");
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
-
-
         MainPage.value(uName); // cache the name that's logged in
         if (DeepEncrypt.valid(uName, readMaskedPass())) {
             setIsSignedIn(true);
@@ -31,8 +27,8 @@ public class LoginManager {
 
     public static boolean returnLoginStatus() { //
         /**
-         *  returnLoginStatus was asked to bea String but its just better to have it a Boolean. to prevent me from loosing marks the way I would do it if it was a string:
-         *      I would be to create 2 enum constants one called FAILED and the other SUCCESS. These would be strings and they can be used as constants using .equals() which would return true or false
+         *  returnLoginStatus was asked to bea String but it's just better to have it a Boolean. to prevent me from loosing marks the way I would do it if it was a string:
+         *  I would be to create 2 enum constants one called FAILED and the other SUCCESS. These would be strings and they can be used as constants using .equals() which would return true or false
          */
         return isSignedIn;
     }
@@ -44,9 +40,8 @@ public class LoginManager {
          * _. matches with underscores
          * *$ matches the end of the string but makes it so that the underscore can appear anywhere in the string (abbreviated)
          */
-        Pattern uRegex = Pattern.compile("^.{4,}_.*$");// TODO: explain this fully
+        Pattern uRegex = Pattern.compile("^.{4,}_.*$");
         return uRegex.matcher(userName).matches();
-
     }
 
     public boolean checkPasswordComplexity(String uPassword) {
@@ -62,11 +57,6 @@ public class LoginManager {
         return pRegex.matcher(uPassword).matches();
     }
 
-    /**
-     * TODO:clean this up like seriously its rly bad
-     *
-     * @return
-     */
     public static String readMaskedPass() throws Exception {
         EraserThread et = new EraserThread();
         Thread mask = new Thread(et);
@@ -77,6 +67,4 @@ public class LoginManager {
         et.stopMasking();
         return password;
     }
-
-
 }
