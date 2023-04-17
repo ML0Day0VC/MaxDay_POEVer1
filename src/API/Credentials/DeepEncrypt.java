@@ -95,8 +95,7 @@ public class DeepEncrypt {
         String[] parts = storedPassword.split(":");
         byte[] hash = fromHex(parts[2]);
         PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), fromHex(parts[1]), Integer.parseInt(parts[0]), hash.length * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] testHash = skf.generateSecret(spec).getEncoded();
+        byte[] testHash = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(spec).getEncoded();
         return Arrays.equals(hash, testHash);
     }
     /**
