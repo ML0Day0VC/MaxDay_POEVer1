@@ -6,7 +6,7 @@ package API;
 
 class EraserThread implements Runnable {
     private volatile boolean stop;
-    public void run() {
+    public void run() {//TODO re-write with parallel thread
         stop = true;
         while (stop) {
             System.out.print("\b*");

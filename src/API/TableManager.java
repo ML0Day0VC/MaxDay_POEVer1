@@ -7,14 +7,13 @@ package API;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
 
 public class TableManager {
 
-    //Im going to be real with you i actually cannot remember what i used this for at all i literally cannot remember
+    //I'm going to be real with whoever is reading this... I actually cannot remember what I used this for at all I literally cannot remember
     private static String[] parseTaskObject(JSONObject mTask) {
         JSONObject task = (JSONObject) mTask.get("task");
         int taskId = (int) task.get("num");
@@ -46,24 +45,25 @@ public class TableManager {
         aat.print(System.out);
     }
 
-    public void removeItem(String uName, int index) throws Exception { //TODO: clean up please and please i need to make a general file manager omg
+    public void removeItem(String uName, int index) throws Exception {
         JSONArray jsonArray = getArray(uName);
         jsonArray.remove(index - 1); // to combat 0 starting point
         update(uName, jsonArray.toJSONString());
     }
 
-    public void addItem(String uName, String taskName, String taskDescript, String dDate, boolean compleated) throws Exception { //TODO: add questions top this so the user can imput data into it to create it
+    public void addItem(String uName, String taskName, String taskDescription, String dDate, boolean completed) throws Exception {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
         newObj.put("nTask", taskName);
-        newObj.put("dTask", taskDescript);
+        newObj.put("dTask", taskDescription);
         newObj.put("date", dDate);
-        newObj.put("isCompleated", compleated);
+        newObj.put("isCompleated", completed);
         jsonArray.add(newObj);
         update(uName, jsonArray.toJSONString());
     }
 
-    public void edit(String uName, int index, int byIndex, String newData) throws Exception { //TODO: im putting this as todo cause its so important, its gonna work as array then the byindex is the date stuf fect working from left to right
+    public void edit(String uName, int index, int byIndex, String newData) throws Exception {
+        //TODO: im putting this as todo cause its so important, its gonna work as array then the byIndex is the date stuff ect working from left to right
         /**
          * @param taskname 1
          *  @param taskDescription 2
@@ -90,8 +90,7 @@ public class TableManager {
         }
         update(uName, jsonArray.toJSONString());
     }
-
-    public void update(String path, String data) throws Exception {
+    public void update(String path, String data) throws Exception { //
         FileWriter fileWriter = new FileWriter("src/tables/" + path + "Table.json");
         fileWriter.write(data);
         fileWriter.flush();

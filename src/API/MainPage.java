@@ -4,22 +4,18 @@
  */
 package API;
 
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.regex.Pattern;
-
 
 public class MainPage extends Thread {
     private static HashMap<String, Object> cache = new HashMap<>();
     private static boolean stopped = false;
     private static String currentUserFromCache = "";
 
-    public MainPage() { // cant remember why this exists tbh
+    public MainPage() {
     }
 
     /**
@@ -36,13 +32,20 @@ public class MainPage extends Thread {
         }
         return value;
     }
+      /*
+      u can actually write it as this but im too lazy for it this is so basic honesty
+
+    public static Object value(String key) {
+    return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
+    }
+     */
 
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-    public static void mainPage() throws IOException {
+    public static void mainPage() {
         welcome();
         new MainPage();
         Thread t1 = new Thread();
@@ -77,7 +80,7 @@ public class MainPage extends Thread {
                             break;
                         }
                         TableManager tableManager = new TableManager();
-                        System.out.println("Table View:\n\n");
+                        System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
                             switch (reader.readLine()) {
@@ -112,19 +115,19 @@ public class MainPage extends Thread {
                                     System.out.println("Please select the index of the entry you would like to edit");
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
-                                            Please select the entry that you would like to change
-                                                                                        
-                                            > Name of Task: 1
-                                            > Description of Task: 2
-                                            > Date of the Task: 3
-                                            > Task Completion: 4
-                                                    Please enter a value between 1 and 4 to select what u want to edit""");
+                                            Please select the entry that you would like to change                                
+                                                > 1 - Name of Task
+                                                > 2 - Description of Task
+                                                > 3 - Date of the Task
+                                                > 4 - Task Completion
+                                            Please enter a value between 1 and 4 to select what u want to edit""");
                                     int var2 = Integer.parseInt(reader.readLine());
-                                    System.out.println("Please enter the new data");
+                                    System.out.println("Please enter the replacement data");
                                     String var3 = reader.readLine();
                                     tableManager.edit(currentUserFromCache, var1, var2, var3);
                                     break;
                                 case "remove":
+                                case "delete":
                                     System.out.println("Please input the num of the entry you would like to remove");
                                     int var4 = Integer.parseInt(reader.readLine());
                                     System.out.println(String.format("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"", var4));
@@ -134,11 +137,11 @@ public class MainPage extends Thread {
                                 case "logout":
                                 case "signout":
                                     System.out.println("API.Entities.User is now logged out");
-                                    lm.setIsSignedIn(false);
+                                    LoginManager.setIsSignedIn(false);
                                     isStoppedTable = true;
                                     break;
                                 default:
-                                    //TODO add info to default
+                                    System.err.println("Unknown command. Run \"help\" for more info on commands");
                             }
                         }
                         break;
@@ -154,10 +157,8 @@ public class MainPage extends Thread {
 
                         break;
                     case "signup":
-
-
                         /**
-                         * TODO: i really wanna make something that prevents idiots from entering blank values like if they hit enter before they have done there stuff idk
+                         * TODO: i really wanna make something that prevents GIGO where poor data entry will lead to errors cause this is CLI.. and its annoying
                          *  //  if (!fName.isEmpty());
                          */
                         System.out.println("Please Enter your first name");
@@ -173,7 +174,7 @@ public class MainPage extends Thread {
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
-                        String uPassword = lm.readMaskedPass(">");
+                        String uPassword = lm.readMaskedPass();
                         if (lm.checkPasswordComplexity(uPassword)) {
                             deepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");

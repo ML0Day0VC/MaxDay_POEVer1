@@ -15,7 +15,7 @@ public class LoginManager {
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
         MainPage.value(uName); // cache the name that's logged in
-        if (deepEncrypt.valid(uName, readMaskedPass(">"))) {
+        if (deepEncrypt.valid(uName, readMaskedPass())) {
             setIsSignedIn(true);
         } else
             System.out.println("Unknown username or password. Please check your credentials and try again");
@@ -33,24 +33,27 @@ public class LoginManager {
         return isSignedIn;
     }
 
-
     public boolean checkUserName(String userName) {
-        Pattern uRegex = Pattern.compile("^.{0,4}_.*$");// TODO: explain this fully
+        /**Explanation of regex:
+         * ^ matches the start of the string
+         * {0,4} matches strings with only 4 characters in lengh
+         * _. matches with underscores
+         * *$ matches the end of the string but makes it so that the underscore can appear anywhere in the string (abbreviated)
+         */
+        Pattern uRegex = Pattern.compile("^.{4,}_.*$");// TODO: explain this fully
         return uRegex.matcher(userName).matches();
 
     }
 
     public boolean checkPasswordComplexity(String uPassword) {
-        /**
-         * ^: asserts that the string starts at the beginning.
-         * (?=.*[a-z]): a positive lookahead that asserts that the string contains at least one lowercase letter (a-z).
-         * (?=.*[A-Z]): a positive lookahead that asserts that the string contains at least one uppercase letter (A-Z).
-         * (?=.*\d): a positive lookahead that asserts that the string contains at least one digit (0-9).
-         * [a-zA-Z\d]{8,}: matches any character that is a lowercase letter, an uppercase letter, or a digit, and requires that the length of the string is at least 8 characters.
-         * $: asserts that the string ends at this point.
-         */
-
         //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
+        /**
+         * [a-z] matches lowercase characters
+         * ?=.*[A-Z] positive look  - matches at least one capital letter (* matches anywhere in the string)
+         * ?=.*\d positive look - matches atleast one number (* matches anywhere in the string)
+         * ?=.*[@$!%*?&] positive look - matches one of the characters (* matches anywhere in the string)
+         * {8,} - checks if string is 8 characters long
+         */
         Pattern pRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");// this thing caused me so much suffering im actually going to cry it's so late rn
         return pRegex.matcher(uPassword).matches();
     }
@@ -58,10 +61,9 @@ public class LoginManager {
     /**
      * TODO:clean this up like seriously its rly bad
      *
-     * @param prompt
      * @return
      */
-    public static String readMaskedPass(String prompt) throws Exception {
+    public static String readMaskedPass() throws Exception {
         EraserThread et = new EraserThread();
         Thread mask = new Thread(et);
         mask.start();
