@@ -7,11 +7,13 @@ package API.Table;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
 
 public class TableManager {
+    private TableManager[] tableManager;
 
     //I'm going to be real with whoever is reading this... I actually cannot remember what I used this for at all I literally cannot remember
     private static String[] parseTaskObject(JSONObject mTask) {
@@ -35,11 +37,31 @@ public class TableManager {
     public static void genTable(String uName) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
-        aat.addHeaderCols("Num", "Name of Task", "Description", "date", "Has been Completed ");
-        int num = 1;
+         /*
+    "taskNumber": 123,
+    "taskName": "Name of our task",
+    "taskDesc": "This is the description of the task",
+    "devDetails": "This is the description of the task",
+    "taskDuration": 12,
+    "taskID": "",
+    "taskStatus":"To Do"
+*/
+        aat.addHeaderCols("API.Table.Task Number", "API.Table.Task Name", "API.Table.Task Description", "Developer Details", "task Duration", "API.Table.Task ID", "API.Table.Task Status");
+        int num = 0;
         for (Object objs : jsonArray) {
             JSONObject jsonObject = (JSONObject) objs;
-            aat.add(num, (String) jsonObject.get("nTask"), (String) jsonObject.get("dTask"), (String) jsonObject.get("date"), ((boolean) jsonObject.get("isCompleated") ? "✓" : "X"));
+
+
+            TableManager[num] = new Task();
+
+
+
+
+
+
+
+
+            aat.add(num, jsonObject.get("nTask"), (String) jsonObject.get("dTask"), (String) jsonObject.get("date"), ((boolean) jsonObject.get("isCompleated") ? "✓" : "X"));
             num++;
         }
         aat.print(System.out);
@@ -54,6 +76,15 @@ public class TableManager {
     public void addItem(String uName, String taskName, String taskDescription, String dDate, boolean completed) throws Exception {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
+        /*
+    "taskNumber": 123,
+    "taskName": "Name of our task",
+    "taskDesc": "This is the description of the task",
+    "devDetails": "This is the description of the task",
+    "taskDuration": 12,
+    "taskID": "",
+    "taskStatus":"To Do"
+*/
         newObj.put("nTask", taskName);
         newObj.put("dTask", taskDescription);
         newObj.put("date", dDate);
@@ -90,6 +121,7 @@ public class TableManager {
         }
         update(uName, jsonArray.toJSONString());
     }
+
     public void update(String path, String data) throws Exception { //
         FileWriter fileWriter = new FileWriter("src/Tables/" + path + "Table.json");
         fileWriter.write(data);

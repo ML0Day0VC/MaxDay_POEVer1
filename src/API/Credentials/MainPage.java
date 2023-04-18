@@ -24,12 +24,14 @@ public class MainPage extends Thread {
     /**
      * Cache lets goo this is so badly made but its nice and funny so its fine
      * This is such a good way of doing this i think its the simplest but im rly not sure
+     *
      * @param key
      * @return
      */
     public static Object value(String key) {
         return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
     }
+
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
@@ -62,10 +64,10 @@ public class MainPage extends Thread {
                                 > exit - exits the program""");
                         break;
                     case "table":
-                        if (!lm.returnLoginStatus()) {
-                            System.err.println("User is not logged in. Please Sign in before continuing");
-                            break;
-                        }
+                        // if (!lm.returnLoginStatus()) {
+                        //          System.err.println("User is not logged in. Please Sign in before continuing");
+                        //           break;
+                        //     }
                         TableManager tableManager = new TableManager();
                         System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
@@ -82,7 +84,8 @@ public class MainPage extends Thread {
                                             > logout - logs out the user""");
                                     break;
                                 case "display":
-                                    tableManager.genTable(currentUserFromCache);
+                                    currentUserFromCache = "max";
+                                    tableManager.genTable(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "add":
                                     String[] str = new String[4];
@@ -120,7 +123,7 @@ public class MainPage extends Thread {
                                     if (reader.readLine().equalsIgnoreCase("yes"))
                                         tableManager.removeItem(currentUserFromCache, var4);
                                     break;
-                                case "logout":
+                                case "logout": //TODO: write this as quit i think
                                 case "signout":
                                     System.out.println("User is now logged out");
                                     LoginManager.setIsSignedIn(false);
