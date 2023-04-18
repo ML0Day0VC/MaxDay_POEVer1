@@ -5,7 +5,7 @@
 
 package API.Credentials;
 
-import API.Table.TableManager;
+import API.Table.TaskManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -68,7 +68,7 @@ public class MainPage extends Thread {
                         //          System.err.println("User is not logged in. Please Sign in before continuing");
                         //           break;
                         //     }
-                        TableManager tableManager = new TableManager();
+                        TaskManager taskManager = new TaskManager();
                         System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
@@ -85,19 +85,21 @@ public class MainPage extends Thread {
                                     break;
                                 case "display":
                                     currentUserFromCache = "max";
-                                    tableManager.genTable(currentUserFromCache); //TODO: rename this to show report
+                                    taskManager.genTable(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "add":
-                                    String[] str = new String[4];
-                                    System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task");
+                                    String[] str = new String[6];
+                                    System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task"); // 0
                                     str[0] = reader.readLine();
-                                    System.out.println("Please enter the description of the task");
+                                    System.out.println("Please enter the description of the task"); // 1
                                     str[1] = reader.readLine();
-                                    System.out.println("Please enter the date of the task [Format : dd/mm/yyyy]");
+                                    System.out.println("Please enter the details of the developer of the task"); //2
                                     str[2] = reader.readLine();
-                                    System.out.println("Please enter the state of the task if it has been completed [true | false]");
+                                    System.out.println("Please enter the task duration in hours");// 3
                                     str[3] = reader.readLine();
-                                    tableManager.addItem(currentUserFromCache, str[0], str[1], str[2], str[3].equalsIgnoreCase("true"));
+                                    System.out.println("Please enter the status of the task [1: To Do  2: Doing  3: Done]"); // 3
+                                    str[4] = reader.readLine();
+                                    taskManager.addItem(currentUserFromCache, str[0], str[1], str[2], Integer.parseInt(str[3]), Integer.parseInt(str[4]));
                                     break;
                                 case "edit":
                                     System.out.println("Please prepare to enter the data for the edited entry");
@@ -113,7 +115,7 @@ public class MainPage extends Thread {
                                     int var2 = Integer.parseInt(reader.readLine());
                                     System.out.println("Please enter the replacement data");
                                     String var3 = reader.readLine();
-                                    tableManager.edit(currentUserFromCache, var1, var2, var3);
+                                    taskManager.edit(currentUserFromCache, var1, var2, var3);
                                     break;
                                 case "remove":
                                 case "delete":
@@ -121,7 +123,7 @@ public class MainPage extends Thread {
                                     int var4 = Integer.parseInt(reader.readLine());
                                     System.out.println(String.format("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"", var4));
                                     if (reader.readLine().equalsIgnoreCase("yes"))
-                                        tableManager.removeItem(currentUserFromCache, var4);
+                                        taskManager.removeItem(currentUserFromCache, var4);
                                     break;
                                 case "logout": //TODO: write this as quit i think
                                 case "signout":

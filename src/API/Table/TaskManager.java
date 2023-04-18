@@ -12,18 +12,36 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
 
-public class TableManager {
-    private TableManager[] tableManager;
 
-    //I'm going to be real with whoever is reading this... I actually cannot remember what I used this for at all I literally cannot remember
-    private static String[] parseTaskObject(JSONObject mTask) {
-        JSONObject task = (JSONObject) mTask.get("task");
-        int taskId = (int) task.get("num");
-        String taskName = (String) task.get("nTask");
-        String taskDescription = (String) task.get("dTask");
-        String date = (String) task.get("date");
-        boolean status = (boolean) task.get("isCompleated");
-        return new String[]{String.valueOf(taskId), taskName, taskDescription, date, (status ? "✓" : "☐")};
+public class TaskManager {
+    private enum taskState {
+        TODO,
+        DOING,
+        DONE
+    }
+
+    private enum taskStatus { // I love this  - UPDATE: I cant use this im just over complicating it honestly
+        TODO("To Do"),
+        DOING("Doing"),
+        DONE("Done");
+        private String label;
+
+        taskStatus(String label) {
+            this.label = label;
+        }
+
+        public String toString() {
+            return label;
+        }
+    }
+
+    public String validateLabel(int stat) {
+        return switch (stat) {
+            case 1 -> "To Do";
+            case 2 -> "Doing";
+            case 3 -> "Done";
+            default -> throw new IllegalStateException("Unexpected value: " + stat);
+        };
     }
 
     public static JSONArray getArray(String path) throws Exception {
@@ -37,31 +55,13 @@ public class TableManager {
     public static void genTable(String uName) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
-         /*
-    "taskNumber": 123,
-    "taskName": "Name of our task",
-    "taskDesc": "This is the description of the task",
-    "devDetails": "This is the description of the task",
-    "taskDuration": 12,
-    "taskID": "",
-    "taskStatus":"To Do"
-*/
-        aat.addHeaderCols("API.Table.Task Number", "API.Table.Task Name", "API.Table.Task Description", "Developer Details", "task Duration", "API.Table.Task ID", "API.Table.Task Status");
+        aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
         int num = 0;
         for (Object objs : jsonArray) {
             JSONObject jsonObject = (JSONObject) objs;
-
-
-            TableManager[num] = new Task();
-
-
-
-
-
-
-
-
-            aat.add(num, jsonObject.get("nTask"), (String) jsonObject.get("dTask"), (String) jsonObject.get("date"), ((boolean) jsonObject.get("isCompleated") ? "✓" : "X"));
+            //TODO DONT STORE TASK ID it will cause hell later i can feel it
+            String taskID = jsonObject.get("taskName").toString().substring(0, 2).toUpperCase() + ":" + jsonObject.get("taskNumber") + ":" + jsonObject.get("devDetails").toString().substring(jsonObject.get("devDetails").toString().length() - 3).toUpperCase();
+            aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, jsonObject.get("taskStatus"));
             num++;
         }
         aat.print(System.out);
@@ -73,22 +73,14 @@ public class TableManager {
         update(uName, jsonArray.toJSONString());
     }
 
-    public void addItem(String uName, String taskName, String taskDescription, String dDate, boolean completed) throws Exception {
+    public void addItem(String uName, String tName, String tDescription, String dDetails, int tHours, int status) throws Exception {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
-        /*
-    "taskNumber": 123,
-    "taskName": "Name of our task",
-    "taskDesc": "This is the description of the task",
-    "devDetails": "This is the description of the task",
-    "taskDuration": 12,
-    "taskID": "",
-    "taskStatus":"To Do"
-*/
-        newObj.put("nTask", taskName);
-        newObj.put("dTask", taskDescription);
-        newObj.put("date", dDate);
-        newObj.put("isCompleated", completed);
+        newObj.put("taskName", tName);
+        newObj.put("taskDesc", tDescription);
+        newObj.put("devDetails", dDetails);
+        newObj.put("taskDuration", tHours);
+        newObj.put("taskStatus", validateLabel(status)); //TODO enum issues could occure here idk
         jsonArray.add(newObj);
         update(uName, jsonArray.toJSONString());
     }

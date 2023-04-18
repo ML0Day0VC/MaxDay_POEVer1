@@ -1,29 +1,23 @@
 [
   {
-    "taskNumber": 123,
     "taskName": "Name of our task",
     "taskDesc": "This is the description of the task",
     "devDetails": "This is the description of the task",
     "taskDuration": 12,
-    "taskID": "",
-    "taskStatus":"To Do"
+    "taskStatus": 1
   },
   {
-    "taskNumber": 123,
     "taskName": "Name of our task",
     "taskDesc": "This is the description of the task",
     "devDetails": "This is the description of the task",
     "taskDuration": 12,
-    "taskID": "",
-    "taskStatus":"To Do"
+    "taskStatus": 1
   },
   {
-    "taskNumber": 123,
     "taskName": "Name of our task",
     "taskDesc": "This is the description of the task",
     "devDetails": "This is the description of the task",
     "taskDuration": 12,
-    "taskID": "",
-    "taskStatus":"To Do"
+    "taskStatus": 1
   }
 ]
