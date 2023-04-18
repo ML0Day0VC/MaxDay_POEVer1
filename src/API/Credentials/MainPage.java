@@ -52,8 +52,7 @@ public class MainPage extends Thread {
             System.out.println("Please type help for more information");
             while (!stopped) {
                 String[] strInput = reader.readLine().split(" ");
-                if (strInput.length <= 0)
-                    continue;
+                if (strInput.length <= 0) continue;
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
                     case "?":
                     case "help": //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
@@ -68,6 +67,7 @@ public class MainPage extends Thread {
                         //          System.err.println("User is not logged in. Please Sign in before continuing");
                         //           break;
                         //     }
+                        currentUserFromCache = "max";
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
@@ -84,7 +84,6 @@ public class MainPage extends Thread {
                                             > logout - logs out the user""");
                                     break;
                                 case "display":
-                                    currentUserFromCache = "max";
                                     taskManager.genTable(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "add":
@@ -107,11 +106,12 @@ public class MainPage extends Thread {
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
                                             Please select the entry that you would like to change                                
-                                                > 1 - Name of Task
+                                                > 1 - Task Name
                                                 > 2 - Description of Task
-                                                > 3 - Date of the Task
-                                                > 4 - Task Completion
-                                            Please enter a value between 1 and 4 to select what u want to edit""");
+                                                > 3 - Developer Details 
+                                                > 4 - Task Duration [Integer]
+                                                > 5 - Task Status  [1: To Do  2: Doing  3: Done]
+                                            Please enter a value between 1 and 5 to select what u want to edit""");
                                     int var2 = Integer.parseInt(reader.readLine());
                                     System.out.println("Please enter the replacement data");
                                     String var3 = reader.readLine();
@@ -186,12 +186,6 @@ public class MainPage extends Thread {
     }
 
     public static void welcome() {
-        System.out.println("\u001b[32m\n _    _      _                             _           _____  _     _____ _                 \n" +
-                "| |  | |    | |                           | |         /  __ \\| |   |_   _| |                \n" +
-                "| |  | | ___| | ___ ___  _ __ ___   ___   | |_ ___    | /  \\/| |     | | | |__   __ _ _ __  \n" +
-                "| |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\  | __/ _ \\   | |    | |     | | | '_ \\ / _` | '_ \\ \n" +
-                "\\  /\\  /  __/ | (_| (_) | | | | | |  __/  | || (_) |  | \\__/\\| |_____| |_| |_) | (_| | | | |\n" +
-                " \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|   \\__\\___/    \\____/\\_____/\\___/|_.__/ \\__,_|_| |_|\n" +
-                "                                                                                            \n");
+        System.out.println("\u001b[32m\n _    _      _                             _           _____  _     _____ _                 \n" + "| |  | |    | |                           | |         /  __ \\| |   |_   _| |                \n" + "| |  | | ___| | ___ ___  _ __ ___   ___   | |_ ___    | /  \\/| |     | | | |__   __ _ _ __  \n" + "| |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\  | __/ _ \\   | |    | |     | | | '_ \\ / _` | '_ \\ \n" + "\\  /\\  /  __/ | (_| (_) | | | | | |  __/  | || (_) |  | \\__/\\| |_____| |_| |_) | (_| | | | |\n" + " \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|   \\__\\___/    \\____/\\_____/\\___/|_.__/ \\__,_|_| |_|\n" + "                                                                                            \n");
     }
 }

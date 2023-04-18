@@ -12,18 +12,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
 
-
+/**
+ * @apiNote I wanna use an enum but failed. Its possible but its just not necessary in this scenario at all
+ */
 public class TaskManager {
-    private enum taskState {
-        TODO,
-        DOING,
-        DONE
-    }
 
     private enum taskStatus { // I love this  - UPDATE: I cant use this im just over complicating it honestly
-        TODO("To Do"),
-        DOING("Doing"),
-        DONE("Done");
+        TODO("To Do"), DOING("Doing"), DONE("Done");
         private String label;
 
         taskStatus(String label) {
@@ -35,7 +30,7 @@ public class TaskManager {
         }
     }
 
-    public String validateLabel(int stat) {
+    public static String validateLabel(int stat) {
         return switch (stat) {
             case 1 -> "To Do";
             case 2 -> "Doing";
@@ -47,8 +42,7 @@ public class TaskManager {
     public static JSONArray getArray(String path) throws Exception {
         FileReader reader = new FileReader("src/tables/" + path.toLowerCase(Locale.ROOT) + "Table.json"); // ik u can throw this into a try catch im not dumb im just lazy
         Object obj = new JSONParser().parse(reader);
-        if (obj instanceof JSONArray)
-            return (JSONArray) obj;
+        if (obj instanceof JSONArray) return (JSONArray) obj;
         return null;
     }
 
@@ -61,7 +55,7 @@ public class TaskManager {
             JSONObject jsonObject = (JSONObject) objs;
             //TODO DONT STORE TASK ID it will cause hell later i can feel it
             String taskID = jsonObject.get("taskName").toString().substring(0, 2).toUpperCase() + ":" + jsonObject.get("taskNumber") + ":" + jsonObject.get("devDetails").toString().substring(jsonObject.get("devDetails").toString().length() - 3).toUpperCase();
-            aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, jsonObject.get("taskStatus"));
+            aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
             num++;
         }
         aat.print(System.out);
@@ -69,7 +63,7 @@ public class TaskManager {
 
     public void removeItem(String uName, int index) throws Exception {
         JSONArray jsonArray = getArray(uName);
-        jsonArray.remove(index - 1); // to combat 0 starting point
+        jsonArray.remove(index);
         update(uName, jsonArray.toJSONString());
     }
 
@@ -80,36 +74,30 @@ public class TaskManager {
         newObj.put("taskDesc", tDescription);
         newObj.put("devDetails", dDetails);
         newObj.put("taskDuration", tHours);
-        newObj.put("taskStatus", validateLabel(status)); //TODO enum issues could occure here idk
+        newObj.put("taskStatus", status); //TODO enum issues could occure here idk
         jsonArray.add(newObj);
         update(uName, jsonArray.toJSONString());
     }
 
     public void edit(String uName, int index, int byIndex, String newData) throws Exception {
-        //TODO: im putting this as todo cause its so important, its gonna work as array then the byIndex is the date stuff ect working from left to right
         /**
-         * @param taskname 1
-         *  @param taskDescription 2
-         *  @param taskDate 3
-         *  @param compleated 4
+         * @aNote important, it's going to work as array then the byIndex is the date stuff ect working from left to right
+         *                                                 > 1 - Task Name
+         *                                                 > 2 - Description of Task
+         *                                                 > 3 - Developer Details
+         *                                                 > 4 - Task Duration
+         *                                                 > 5 - Task Status
          */
         JSONArray jsonArray = getArray(uName);
-        JSONObject newObj = (JSONObject) jsonArray.get(index - 1);
+        assert jsonArray != null; // prevents brain rot
+        JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
-            case 1:
-                newObj.put("nTask", newData);
-                break;
-            case 2:
-                newObj.put("dTask", newData);
-                break;
-            case 3:
-                newObj.put("date", newData); //TODO: add date checker to check for a valid date ect...
-                break;
-            case 4:
-                newObj.put("isCompleated", newData.equalsIgnoreCase("true"));
-                break;
-            default:
-                System.out.println("you messed up its between 1 and 4");
+            case 1 -> newObj.put("taskName", newData);
+            case 2 -> newObj.put("taskDesc", newData);
+            case 3 -> newObj.put("devDetails", newData);
+            case 4 -> newObj.put("taskDuration", newData);
+            case 5 -> newObj.put("taskStatus", newData);
+            default -> System.out.println("you messed up its between 1 and 4");
         }
         update(uName, jsonArray.toJSONString());
     }
