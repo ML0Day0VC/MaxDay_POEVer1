@@ -51,10 +51,10 @@ public class MainPage extends Thread {
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
                     case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
                             System.out.println("""
-                                    > help - displays this page
-                                    > login - provides page for user login
-                                    > signup - allows the user to create a new account
-                                    > exit - exits the program""");
+                                    > help - Displays info about the commands that can be run
+                                    > login - Provides page for user login
+                                    > signup - Allows the user to create a new account
+                                    > exit - Exits the program""");
                     case "table" -> {
                      /*   if (!LoginManager.returnLoginStatus()) {
                             System.err.println("User is not logged in. Please Sign in before continuing");
@@ -69,16 +69,16 @@ public class MainPage extends Thread {
                         while (!isStoppedTable) {
                             switch (reader.readLine()) {
                                 case "?", "help" -> System.out.println("""
-                                        > help - displays this page
-                                        > display - shows the updated table
-                                        > dev list - lists all the developers who have accounts on the system
-                                        > dev task list - lists all the tasks that the developer has assigned to them
-                                        > dev max duration - lists the develop with the longest task
-                                        > dev max search - lists the developer with the most amount of tasks
-                                        > add - adds info to the table
-                                        > edit - edits the table
-                                        > remove - removes a line from the table
-                                        > logout - logs out the user""");
+                                        > help - Displays info about the commands that can be run
+                                        > display - Shows the final report
+                                        > dev list - Lists all the developers who have accounts on the system
+                                        > dev task list - Lists all the tasks that the developer has assigned to them
+                                        > dev max duration - Lists the develop with the longest task
+                                        > dev max search - Lists the developer with the most amount of tasks
+                                        > add - Adds info to the table
+                                        > edit - Edits the table
+                                        > remove - Removes a line from the table
+                                        > logout - Logs out the user""");
                                 case "display" ->
                                         TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                 case "dev list" ->
