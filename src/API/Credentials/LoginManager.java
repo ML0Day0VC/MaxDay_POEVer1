@@ -4,8 +4,13 @@
  */
 package API.Credentials;
 
+import API.Tools.FileManager;
+
 import java.io.*;
+import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginManager {
     private static boolean isSignedIn = false;
@@ -17,8 +22,7 @@ public class LoginManager {
         MainPage.value(uName); // cache the name that's logged in
         if (DeepEncrypt.valid(uName, readMaskedPass())) {
             setIsSignedIn(true);
-        } else
-            System.out.println("Unknown username or password. Please check your credentials and try again");
+        } else System.out.println("Unknown username or password. Please check your credentials and try again");
     }
 
     public static void setIsSignedIn(boolean inSignedIn) {
@@ -44,9 +48,32 @@ public class LoginManager {
         return uRegex.matcher(userName).matches();
     }
 
+    public String[] getAllDevelopers() throws Exception {
+        FileManager fileManager = new FileManager();
+        Scanner scanner = new Scanner(fileManager.readFile());
+        String strArr[] = new String[256];// a list would actually be better for manipulation of array like stuff with unknown lengths because with standard arrays we have to specify the exact array length to allow JVM to reserve memory beforehand
+        int count = 0;
+        while (scanner.hasNextLine()) {
+            String[] parts = scanner.nextLine().split("\\|");
+            System.out.println(parts[0]);
+            strArr[count] = parts[0];
+            count++;
+        }
+        return strArr;
+    }
+
+    public String[] getAllDevs() throws Exception {
+        FileManager fileManager = new FileManager();
+        Scanner scanner = new Scanner(fileManager.readFile());
+        List<String> strList = new ArrayList<>();
+        // a list would actually be better for manipulation of array like stuff with unknown lengths because with standard arrays we have to specify the exact array length to allow JVM to reserve memory beforehand
+        while (scanner.hasNextLine()) strList.add(scanner.nextLine().split("\\|")[0]);
+        return strList.toArray(new String[0]);
+    }
+
     public boolean checkPasswordComplexity(String uPassword) {
         //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
-        /**
+        /**Explanation of regex:
          * [a-z] matches lowercase characters
          * ?=.*[A-Z] positive look  - matches at least one capital letter (* matches anywhere in the string)
          * ?=.*\d positive look - matches atleast one number (* matches anywhere in the string)

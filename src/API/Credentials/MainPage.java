@@ -9,6 +9,7 @@ import API.Table.TaskManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -86,6 +87,10 @@ public class MainPage extends Thread {
                                 case "display":
                                     taskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                     break;
+                                case "dev list":
+                                    String devStr= Arrays.toString(lm.getAllDevs());
+                                    System.out.println("List of all developers:\n " + devStr.substring(1, devStr.length() - 1).replaceAll(",", "\n"));
+                                    break;
                                 case "add":
                                     String[] str = new String[6];
                                     System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task"); // 0
@@ -156,8 +161,6 @@ public class MainPage extends Thread {
                         String fName = reader.readLine();
                         System.out.println("Please Enter your surname");
                         String sName = reader.readLine();
-                        System.out.println("Please Enter your date of birth  - FORMAT: DD/MM/YYYY ");
-                        String dOB = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
                         if (!lm.checkUserName(uName)) {
@@ -167,7 +170,7 @@ public class MainPage extends Thread {
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
                         String uPassword = lm.readMaskedPass();
                         if (lm.checkPasswordComplexity(uPassword)) {
-                            DeepEncrypt.registerUser(uName, uPassword, fName, sName, dOB);
+                            DeepEncrypt.registerUser(uName, uPassword, fName, sName);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else
                             System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled");

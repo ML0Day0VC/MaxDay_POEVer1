@@ -24,8 +24,8 @@ import java.util.Scanner;
 
 public class DeepEncrypt {
 
-    public static void registerUser(String uName, String uPassword, String fName, String sName, String dOB) throws Exception {
-        String entry = String.format("%s|%s|%s|%s|%s", uName, generateStorngPasswordHash(uPassword), fName, sName, dOB);
+    public static void registerUser(String uName, String uPassword, String fName, String sName) throws Exception {
+        String entry = String.format("%s|%s|%s|%s|%s", uName, generateStorngPasswordHash(uPassword), fName, sName);
         new FileManager().addEntry(entry);
         new FileManager().createTBLManager(uName);
         System.out.println("Wrote password");
