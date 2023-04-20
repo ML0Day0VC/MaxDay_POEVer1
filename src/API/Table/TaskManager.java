@@ -16,19 +16,7 @@ import java.util.Locale;
  * @apiNote I wanna use an enum but failed. Its possible but its just not necessary in this scenario at all
  */
 public class TaskManager {
-
-    private enum taskStatus { // I love this  - UPDATE: I cant use this im just over complicating it honestly
-        TODO("To Do"), DOING("Doing"), DONE("Done");
-        private String label;
-
-        taskStatus(String label) {
-            this.label = label;
-        }
-
-        public String toString() {
-            return label;
-        }
-    }
+    private static int totalHours = 0;
 
     public static String validateLabel(int stat) {
         return switch (stat) {
@@ -39,6 +27,23 @@ public class TaskManager {
         };
     }
 
+    public boolean checkTaskDescription(String tDescription) {
+        if (tDescription.length() > 50) {
+            System.out.println("Please enter a task description of less than 50 characters");
+            return true;
+        }
+        return false;
+    }
+
+    public static String createTaskID(String tName, String devDetails, int tNumber) {
+        return String.format("%s:%d:%s", tName.substring(0, 2).toUpperCase(), tNumber, devDetails.substring(devDetails.length() - 3).toUpperCase());
+    }
+
+    public static int returnTotalHours() {
+        //This feels like cheating but i have a loop running in the @printTaskDetails method so i just total it with a local variable
+        return totalHours;
+    }
+
     public static JSONArray getArray(String path) throws Exception {
         FileReader reader = new FileReader("src/tables/" + path.toLowerCase(Locale.ROOT) + "Table.json"); // ik u can throw this into a try catch im not dumb im just lazy
         Object obj = new JSONParser().parse(reader);
@@ -46,19 +51,20 @@ public class TaskManager {
         return null;
     }
 
-    public static void genTable(String uName) throws Exception {
+    public static void printTaskDetails(String uName) throws Exception { //This is meant to be a String. I'm sorry but I have done it very differently this whole project
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
         int num = 0;
         for (Object objs : jsonArray) {
             JSONObject jsonObject = (JSONObject) objs;
-            //TODO DONT STORE TASK ID it will cause hell later i can feel it
-            String taskID = jsonObject.get("taskName").toString().substring(0, 2).toUpperCase() + ":" + jsonObject.get("taskNumber") + ":" + jsonObject.get("devDetails").toString().substring(jsonObject.get("devDetails").toString().length() - 3).toUpperCase();
+            String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
             aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
+            totalHours += Integer.parseInt(jsonObject.get("taskDuration").toString());
             num++;
         }
         aat.print(System.out);
+        System.out.println("Total Hours: " + returnTotalHours());
     }
 
     public void removeItem(String uName, int index) throws Exception {
@@ -71,12 +77,15 @@ public class TaskManager {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
         newObj.put("taskName", tName);
+        if (checkTaskDescription(tDescription)) return;
         newObj.put("taskDesc", tDescription);
         newObj.put("devDetails", dDetails);
         newObj.put("taskDuration", tHours);
         newObj.put("taskStatus", status); //TODO enum issues could occure here idk
         jsonArray.add(newObj);
+        System.out.println("Task successfully captured");
         update(uName, jsonArray.toJSONString());
+
     }
 
     public void edit(String uName, int index, int byIndex, String newData) throws Exception {
@@ -93,7 +102,7 @@ public class TaskManager {
         JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
             case 1 -> newObj.put("taskName", newData);
-            case 2 -> newObj.put("taskDesc", newData);
+            case 2 -> newObj.put("taskDesc", newData); //TODO lenght of description check
             case 3 -> newObj.put("devDetails", newData);
             case 4 -> newObj.put("taskDuration", newData);
             case 5 -> newObj.put("taskStatus", newData);
@@ -107,5 +116,9 @@ public class TaskManager {
         fileWriter.write(data);
         fileWriter.flush();
         fileWriter.close();
+        System.out.println("\n\n\t\t\t\t>>>  Updated the table  <<<");
+        printTaskDetails(path);
     }
 }
+
+

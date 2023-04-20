@@ -84,7 +84,7 @@ public class MainPage extends Thread {
                                             > logout - logs out the user""");
                                     break;
                                 case "display":
-                                    taskManager.genTable(currentUserFromCache); //TODO: rename this to show report
+                                    taskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "add":
                                     String[] str = new String[6];

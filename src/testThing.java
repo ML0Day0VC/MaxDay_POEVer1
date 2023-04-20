@@ -3,6 +3,10 @@
  * Created At: 2023/04/15
  * <p>
  * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
+ * <p>
+ * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
+ * <p>
+ * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
  */
 
 /**
@@ -57,10 +61,19 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
         } else {
             System.out.println("Pattern does not match input");
         }
+
+
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
+
 
 
 
