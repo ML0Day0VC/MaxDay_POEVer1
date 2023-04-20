@@ -69,7 +69,7 @@ public class TaskManager {
         System.out.println("Total Hours: " + returnTotalHours());
     }
 
-    public static void printFilteredTaskDetails(String uName, String devName) throws Exception { //This is meant to be a String. I'm sorry but I have done it very differently this whole project
+    public static void printFilteredTaskDetails(String uName, String devName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
@@ -78,15 +78,34 @@ public class TaskManager {
         for (Object objs : jsonArray) {
             JSONObject jsonObject = (JSONObject) objs;
 
-           if (jsonObject.get("devDetails").toString().contains(devName)) {
-               String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
-               aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
-               totalHours += Integer.parseInt(jsonObject.get("taskDuration").toString());
-               num++;
-           }
+            if (jsonObject.get("devDetails").toString().contains(devName)) {
+                String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
+                aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
+                totalHours += Integer.parseInt(jsonObject.get("taskDuration").toString());
+                num++;
+            }
         }
         aat.print(System.out);
         System.out.println("Total Hours: " + returnTotalHours());
+    }
+
+    public static void printFilteredTaskDevLongest(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+        JSONArray jsonArray = getArray(uName);
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Developer Details", "Task Duration");
+        int maxInt = 0;
+        String maxDev = "";
+        assert jsonArray != null; // to prevent brain rot
+        for (Object objs : jsonArray) {
+            JSONObject jsonObject = (JSONObject) objs;
+            int taskDuration = Integer.parseInt(jsonObject.get("taskDuration").toString());
+            if (taskDuration > maxInt) {
+                maxDev = jsonObject.get("devDetails").toString();
+                maxInt = taskDuration;
+            }
+        }
+        aat.add(maxDev, maxInt);
+        aat.print(System.out);
     }
 
     public void removeItem(String uName, int index) throws Exception {

@@ -56,20 +56,20 @@ public class MainPage extends Thread {
                 String[] strInput = reader.readLine().split(" ");
                 if (strInput.length <= 0) continue;
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
-                    case "?":
-                    case "help": //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
-                        System.out.println("""
-                                > help - displays this page
-                                > login - provides page for user login
-                                > signup - allows the user to create a new account
-                                > exit - exits the program""");
-                        break;
-                    case "table":
-                        // if (!lm.returnLoginStatus()) {
-                        //          System.err.println("User is not logged in. Please Sign in before continuing");
-                        //           break;
-                        //     }
-                        currentUserFromCache = "max";
+                    case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
+                            System.out.println("""
+                                    > help - displays this page
+                                    > login - provides page for user login
+                                    > signup - allows the user to create a new account
+                                    > exit - exits the program""");
+                    case "table" -> {
+                     /*   if (!LoginManager.returnLoginStatus()) {
+                            System.err.println("User is not logged in. Please Sign in before continuing");
+                            break;
+                        }
+
+                      */
+                        currentUserFromCache = "max"; //TODO testing
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
@@ -81,12 +81,12 @@ public class MainPage extends Thread {
                                             > help - displays this page
                                             > display - shows the updated table
                                             > add - adds info to the table
-                                            > edit - edits the table 
+                                            > edit - edits the table
                                             > remove - removes a line from the table
                                             > logout - logs out the user""");
                                     break;
                                 case "display":
-                                    taskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
+                                    TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "dev list":
                                     String devStr = Arrays.toString(lm.getAllDevs());
@@ -94,7 +94,10 @@ public class MainPage extends Thread {
                                     break;
                                 case "dev task list":
                                     System.out.println("Please list the name of the developer");
-                                    taskManager.printFilteredTaskDetails(currentUserFromCache, reader.readLine());
+                                    TaskManager.printFilteredTaskDetails(currentUserFromCache, reader.readLine());
+                                    break;
+                                case "dev max duration":
+                                    TaskManager.printFilteredTaskDevLongest(currentUserFromCache);
                                     break;
                                 case "add":
                                     String[] str = new String[6];
@@ -111,8 +114,7 @@ public class MainPage extends Thread {
                                     taskManager.addItem(currentUserFromCache, str[0], str[1], str[2], Integer.parseInt(str[3]), Integer.parseInt(str[4]));
                                     break;
                                 case "edit":
-                                    System.out.println("Please prepare to enter the data for the edited entry");
-                                    System.out.println("Please select the index of the entry you would like to edit");
+                                    System.out.println("Please prepare to enter the data for the edited entry\nPlease select the index of the entry you would like to edit");
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
                                             Please select the entry that you would like to change                                
@@ -135,7 +137,7 @@ public class MainPage extends Thread {
                                     if (reader.readLine().equalsIgnoreCase("yes"))
                                         taskManager.removeItem(currentUserFromCache, var4);
                                     break;
-                                case "logout": //TODO: write this as quit i think
+                                case "logout":
                                 case "signout":
                                     System.out.println("User is now logged out");
                                     LoginManager.setIsSignedIn(false);
@@ -145,9 +147,8 @@ public class MainPage extends Thread {
                                     System.err.println("Unknown command. Run \"help\" for more info on commands");
                             }
                         }
-                        break;
-                    case "login":
-                    case "signin":
+                    }
+                    case "login", "signin" -> {
                         if (LoginManager.returnLoginStatus()) {
                             System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
@@ -155,9 +156,8 @@ public class MainPage extends Thread {
                         LoginManager.loginUser();
                         Collection<Object> values = cache.values();
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-
-                        break;
-                    case "signup":
+                    }
+                    case "signup" -> {
                         /**
                          * TODO: i really wanna make something that prevents GIGO where poor data entry will lead to errors cause this is CLI.. and its annoying
                          *  //  if (!fName.isEmpty());
@@ -169,7 +169,7 @@ public class MainPage extends Thread {
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
                         if (!lm.checkUserName(uName)) {
-                            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\n\t Process has been canceled");
+                            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\nProcess has been canceled. To try again please type \"signup\" and try again");
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
@@ -178,13 +178,10 @@ public class MainPage extends Thread {
                             DeepEncrypt.registerUser(uName, uPassword, fName, sName);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else
-                            System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled");
-                        break;
-                    case "exit":
-                        System.exit(420);
-                        break;
-                    default:
-                        System.err.println("Unknown command. Run \"help\" for more info on commands");
+                            System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled.  To try again please type \"signup\" and try again");
+                    }
+                    case "exit" -> System.exit(420);
+                    default -> System.err.println("Unknown command. Run \"help\" for more info on commands");
                 }
             }
             System.out.println("Stopped");

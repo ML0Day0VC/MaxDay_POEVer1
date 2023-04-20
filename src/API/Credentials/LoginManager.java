@@ -20,9 +20,10 @@ public class LoginManager {
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println("Please Enter Password");
         MainPage.value(uName); // cache the name that's logged in
-        if (DeepEncrypt.valid(uName, readMaskedPass())) {
+        if (DeepEncrypt.valid(uName, readMaskedPass()))
             setIsSignedIn(true);
-        } else System.out.println("Unknown username or password. Please check your credentials and try again");
+        else
+            System.out.println("Unknown username or password. Please check your credentials and try typing \"login\" again to retry");
     }
 
     public static void setIsSignedIn(boolean inSignedIn) {
@@ -31,8 +32,8 @@ public class LoginManager {
 
     public static boolean returnLoginStatus() { //
         /**
-         *  returnLoginStatus was asked to bea String but it's just better to have it a Boolean. to prevent me from loosing marks the way I would do it if it was a string:
-         *  I would be to create 2 enum constants one called FAILED and the other SUCCESS. These would be strings and they can be used as constants using .equals() which would return true or false
+         *  returnLoginStatus was asked to bea String, but it's just better to have it a Boolean. to prevent me from loosing marks the way I would do it if it was a string:
+         *  I would be to create 2 enum constants one called FAILED and the other SUCCESS. These would be strings, and they can be used as constants using .equals() which would return true or false
          */
         return isSignedIn;
     }
@@ -40,7 +41,7 @@ public class LoginManager {
     public boolean checkUserName(String userName) {
         /**Explanation of regex:
          * ^ matches the start of the string
-         * {0,4} matches strings with only 4 characters in lengh
+         * {0,4} matches strings with only 4 characters in length
          * _. matches with underscores
          * *$ matches the end of the string but makes it so that the underscore can appear anywhere in the string (abbreviated)
          */
@@ -62,7 +63,7 @@ public class LoginManager {
         /**Explanation of regex:
          * [a-z] matches lowercase characters
          * ?=.*[A-Z] positive look  - matches at least one capital letter (* matches anywhere in the string)
-         * ?=.*\d positive look - matches atleast one number (* matches anywhere in the string)
+         * ?=.*\d positive look - matches at least one number (* matches anywhere in the string)
          * ?=.*[@$!%*?&] positive look - matches one of the characters (* matches anywhere in the string)
          * {8,} - checks if string is 8 characters long
          */
