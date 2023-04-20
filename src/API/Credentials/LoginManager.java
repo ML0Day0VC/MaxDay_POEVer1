@@ -48,26 +48,12 @@ public class LoginManager {
         return uRegex.matcher(userName).matches();
     }
 
-    public String[] getAllDevelopers() throws Exception {
-        FileManager fileManager = new FileManager();
-        Scanner scanner = new Scanner(fileManager.readFile());
-        String strArr[] = new String[256];// a list would actually be better for manipulation of array like stuff with unknown lengths because with standard arrays we have to specify the exact array length to allow JVM to reserve memory beforehand
-        int count = 0;
-        while (scanner.hasNextLine()) {
-            String[] parts = scanner.nextLine().split("\\|");
-            System.out.println(parts[0]);
-            strArr[count] = parts[0];
-            count++;
-        }
-        return strArr;
-    }
-
-    public String[] getAllDevs() throws Exception {
+    public String[] getAllDevs() throws Exception { //using a list rather than an array is way better because it means it doesn't have to have memory allocation beforehand. lists do not need to reserve there size in the memory before hand so its better for unknown lengths of elements
         FileManager fileManager = new FileManager();
         Scanner scanner = new Scanner(fileManager.readFile());
         List<String> strList = new ArrayList<>();
-        // a list would actually be better for manipulation of array like stuff with unknown lengths because with standard arrays we have to specify the exact array length to allow JVM to reserve memory beforehand
-        while (scanner.hasNextLine()) strList.add(scanner.nextLine().split("\\|")[0]);
+        String str[] = scanner.nextLine().split("\\|");
+        while (scanner.hasNextLine()) strList.add(String.format("%s|%s", str[2], str[3]));
         return strList.toArray(new String[0]);
     }
 

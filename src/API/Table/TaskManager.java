@@ -4,12 +4,14 @@
  */
 package API.Table;
 
+import API.Credentials.LoginManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -62,6 +64,26 @@ public class TaskManager {
             aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
             totalHours += Integer.parseInt(jsonObject.get("taskDuration").toString());
             num++;
+        }
+        aat.print(System.out);
+        System.out.println("Total Hours: " + returnTotalHours());
+    }
+
+    public static void printFilteredTaskDetails(String uName, String devName) throws Exception { //This is meant to be a String. I'm sorry but I have done it very differently this whole project
+        JSONArray jsonArray = getArray(uName);
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
+        int num = 0;
+        assert jsonArray != null; // to prevent brain rot
+        for (Object objs : jsonArray) {
+            JSONObject jsonObject = (JSONObject) objs;
+
+           if (jsonObject.get("devDetails").toString().contains(devName)) {
+               String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
+               aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
+               totalHours += Integer.parseInt(jsonObject.get("taskDuration").toString());
+               num++;
+           }
         }
         aat.print(System.out);
         System.out.println("Total Hours: " + returnTotalHours());
@@ -120,8 +142,11 @@ public class TaskManager {
         printTaskDetails(path);
     }
 
+    public boolean filterDeveloper(String devName) throws Exception {
+        return Arrays.toString(new LoginManager().getAllDevs()).contains(devName);
+    }
 
-    //TODO filter task for each developer
+
 }
 
 

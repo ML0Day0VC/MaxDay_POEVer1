@@ -20,7 +20,8 @@ public class MainPage extends Thread {
     private static String currentUserFromCache = "";
 
     public MainPage() {
-    }
+    }//TODO add more info to the user input on like if the user messes up and stuff. how to prcede with the application
+
 
     /**
      * Cache lets goo this is so badly made but its nice and funny so its fine
@@ -88,8 +89,12 @@ public class MainPage extends Thread {
                                     taskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                     break;
                                 case "dev list":
-                                    String devStr= Arrays.toString(lm.getAllDevs());
+                                    String devStr = Arrays.toString(lm.getAllDevs());
                                     System.out.println("List of all developers:\n " + devStr.substring(1, devStr.length() - 1).replaceAll(",", "\n"));
+                                    break;
+                                case "dev task list":
+                                    System.out.println("Please list the name of the developer");
+                                    taskManager.printFilteredTaskDetails(currentUserFromCache, reader.readLine());
                                     break;
                                 case "add":
                                     String[] str = new String[6];
@@ -101,7 +106,7 @@ public class MainPage extends Thread {
                                     str[2] = reader.readLine();
                                     System.out.println("Please enter the task duration in hours");// 3
                                     str[3] = reader.readLine();
-                                    System.out.println("Please enter the status of the task [1: To Do  2: Doing  3: Done]"); // 3
+                                    System.out.println("Please enter the status of the task [1: To Do  2: Doing  3: Done]"); // 4
                                     str[4] = reader.readLine();
                                     taskManager.addItem(currentUserFromCache, str[0], str[1], str[2], Integer.parseInt(str[3]), Integer.parseInt(str[4]));
                                     break;
@@ -126,7 +131,7 @@ public class MainPage extends Thread {
                                 case "delete":
                                     System.out.println("Please input the num of the entry you would like to remove");
                                     int var4 = Integer.parseInt(reader.readLine());
-                                    System.out.println(String.format("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"", var4));
+                                    System.out.printf("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"%n", var4);
                                     if (reader.readLine().equalsIgnoreCase("yes"))
                                         taskManager.removeItem(currentUserFromCache, var4);
                                     break;
@@ -143,11 +148,11 @@ public class MainPage extends Thread {
                         break;
                     case "login":
                     case "signin":
-                        if (lm.returnLoginStatus()) {
+                        if (LoginManager.returnLoginStatus()) {
                             System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
-                        lm.loginUser();
+                        LoginManager.loginUser();
                         Collection<Object> values = cache.values();
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
 
@@ -168,7 +173,7 @@ public class MainPage extends Thread {
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
-                        String uPassword = lm.readMaskedPass();
+                        String uPassword = LoginManager.readMaskedPass();
                         if (lm.checkPasswordComplexity(uPassword)) {
                             DeepEncrypt.registerUser(uName, uPassword, fName, sName);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
