@@ -49,15 +49,6 @@ public class LoginManager {
         return uRegex.matcher(userName).matches();
     }
 
-    public String[] getAllDevs() throws Exception { //using a list rather than an array is way better because it means it doesn't have to have memory allocation beforehand. lists do not need to reserve there size in the memory before hand so its better for unknown lengths of elements
-        FileManager fileManager = new FileManager();
-        Scanner scanner = new Scanner(fileManager.readFile());
-        List<String> strList = new ArrayList<>();
-        String str[] = scanner.nextLine().split("\\|");
-        while (scanner.hasNextLine()) strList.add(String.format("%s|%s", str[2], str[3]));
-        return strList.toArray(new String[0]);
-    }
-
     public boolean checkPasswordComplexity(String uPassword) {
         //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
         /**Explanation of regex:

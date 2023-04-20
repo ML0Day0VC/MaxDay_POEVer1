@@ -22,17 +22,10 @@ public class MainPage extends Thread {
     public MainPage() {
     }//TODO add more info to the user input on like if the user messes up and stuff. how to prcede with the application
 
-
-    /**
-     * Cache lets goo this is so badly made but its nice and funny so its fine
-     * This is such a good way of doing this i think its the simplest but im rly not sure
-     *
-     * @param key
-     * @return
-     */
     public static Object value(String key) {
         return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
     }
+    // Caching value, so I don't need to carry object over all the threads and methods. I can legit pull it from everywhere i love it
 
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
@@ -75,31 +68,32 @@ public class MainPage extends Thread {
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
                             switch (reader.readLine()) {
-                                case "?":
-                                case "help":
-                                    System.out.println("""
-                                            > help - displays this page
-                                            > display - shows the updated table
-                                            > add - adds info to the table
-                                            > edit - edits the table
-                                            > remove - removes a line from the table
-                                            > logout - logs out the user""");
-                                    break;
-                                case "display":
-                                    TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
-                                    break;
-                                case "dev list":
-                                    String devStr = Arrays.toString(lm.getAllDevs());
-                                    System.out.println("List of all developers:\n " + devStr.substring(1, devStr.length() - 1).replaceAll(",", "\n"));
-                                    break;
-                                case "dev task list":
+                                case "?", "help" -> System.out.println("""
+                                        > help - displays this page
+                                        > display - shows the updated table
+                                        > dev list - lists all the developers who have accounts on the system
+                                        > dev task list - lists all the tasks that the developer has assigned to them
+                                        > dev max duration - lists the develop with the longest task
+                                        > dev max search - lists the developer with the most amount of tasks
+                                        > add - adds info to the table
+                                        > edit - edits the table
+                                        > remove - removes a line from the table
+                                        > logout - logs out the user""");
+                                case "display" ->
+                                        TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
+                                case "dev list" ->
+                                        taskManager.printFilteredDevsList(currentUserFromCache);
+                                case "dev task list" -> {
                                     System.out.println("Please list the name of the developer");
                                     TaskManager.printFilteredTaskDetails(currentUserFromCache, reader.readLine());
-                                    break;
-                                case "dev max duration":
-                                    TaskManager.printFilteredTaskDevLongest(currentUserFromCache);
-                                    break;
-                                case "add":
+                                }
+                                case "dev max duration" ->
+                                        TaskManager.printFilteredTaskDevLongest(currentUserFromCache);
+                                case "dev task search" -> {
+                                    System.out.println("Please enter the name of the task to search");
+                                    TaskManager.printFilteredTaskDevSearch(currentUserFromCache, reader.readLine());
+                                }
+                                case "add" -> {
                                     String[] str = new String[6];
                                     System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task"); // 0
                                     str[0] = reader.readLine();
@@ -112,8 +106,8 @@ public class MainPage extends Thread {
                                     System.out.println("Please enter the status of the task [1: To Do  2: Doing  3: Done]"); // 4
                                     str[4] = reader.readLine();
                                     taskManager.addItem(currentUserFromCache, str[0], str[1], str[2], Integer.parseInt(str[3]), Integer.parseInt(str[4]));
-                                    break;
-                                case "edit":
+                                }
+                                case "edit" -> {
                                     System.out.println("Please prepare to enter the data for the edited entry\nPlease select the index of the entry you would like to edit");
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
@@ -128,23 +122,21 @@ public class MainPage extends Thread {
                                     System.out.println("Please enter the replacement data");
                                     String var3 = reader.readLine();
                                     taskManager.edit(currentUserFromCache, var1, var2, var3);
-                                    break;
-                                case "remove":
-                                case "delete":
+                                }
+                                case "remove", "delete" -> {
                                     System.out.println("Please input the num of the entry you would like to remove");
                                     int var4 = Integer.parseInt(reader.readLine());
                                     System.out.printf("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"%n", var4);
                                     if (reader.readLine().equalsIgnoreCase("yes"))
                                         taskManager.removeItem(currentUserFromCache, var4);
-                                    break;
-                                case "logout":
-                                case "signout":
+                                }
+                                case "logout", "signout" -> {
                                     System.out.println("User is now logged out");
                                     LoginManager.setIsSignedIn(false);
                                     isStoppedTable = true;
-                                    break;
-                                default:
-                                    System.err.println("Unknown command. Run \"help\" for more info on commands");
+                                }
+                                default ->
+                                        System.err.println("Unknown command. Run \"help\" for more info on commands");
                             }
                         }
                     }

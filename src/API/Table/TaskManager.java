@@ -77,7 +77,6 @@ public class TaskManager {
         assert jsonArray != null; // to prevent brain rot
         for (Object objs : jsonArray) {
             JSONObject jsonObject = (JSONObject) objs;
-
             if (jsonObject.get("devDetails").toString().contains(devName)) {
                 String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
                 aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
@@ -105,6 +104,38 @@ public class TaskManager {
             }
         }
         aat.add(maxDev, maxInt);
+        aat.print(System.out);
+    }
+
+    public static void printFilteredTaskDevSearch(String uName, String key) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+        JSONArray jsonArray = getArray(uName);
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
+        int num = 0;
+        assert jsonArray != null; // to prevent brain rot
+        for (Object objs : jsonArray) {
+            JSONObject jsonObject = (JSONObject) objs;
+            if (jsonObject.get("taskName").toString().contains(key)) {
+                String taskID = createTaskID(jsonObject.get("taskName").toString(), jsonObject.get("devDetails").toString(), num);
+                aat.add(num, jsonObject.get("taskName"), jsonObject.get("taskDesc"), jsonObject.get("devDetails"), jsonObject.get("taskDuration"), taskID, validateLabel(Integer.parseInt(jsonObject.get("taskStatus").toString())));
+                num++;
+            }
+        }
+        aat.print(System.out);
+
+    }
+
+    public static void printFilteredDevsList(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+        JSONArray jsonArray = getArray(uName);
+        AsciiArtTable aat = new AsciiArtTable();
+        aat.addHeaderCols("Index", "Developer:");
+        int num = 0;
+        assert jsonArray != null; // to prevent brain rot
+        for (Object objs : jsonArray) {
+            JSONObject jsonObject = (JSONObject) objs;
+            aat.add(num, jsonObject.get("devDetails"));
+            num++;
+        }
         aat.print(System.out);
     }
 
@@ -159,10 +190,6 @@ public class TaskManager {
         fileWriter.close();
         System.out.println("\n\n\t\t\t\t>>>  Updated the table  <<<");
         printTaskDetails(path);
-    }
-
-    public boolean filterDeveloper(String devName) throws Exception {
-        return Arrays.toString(new LoginManager().getAllDevs()).contains(devName);
     }
 
 

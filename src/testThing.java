@@ -50,6 +50,10 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
         String taskID = taskName.substring(0, 2).toUpperCase() + ":" + taskNumber + ":" + developerName.substring(developerName.length() - 3).toUpperCase();
 
 
+        String ssss = "Create Blog Section\nDevelop a blog section for the website\nMichael Brown\n12\n3\nFix Bugs\nIdentify and fix any bugs in the website\nSophia Davis\n8\n1\nIntegrate Payment Gateway\nAdd a payment gateway to the website\nWilliam Garcia\n20\n2\nOptimize Website Speed\nImprove the website's loading speed\nOlivia Martinez\n16\n3\nDevelop Mobile App\nCreate a mobile app for the website\nEthan Wilson\n25\n1\nImplement Search Functionality\nAdd search functionality to the website\nAva Lee\n10\n2\nCreate User Dashboard\nDevelop a dashboard for users to manage their accounts\nBenjamin Jackson\n18\n3\nPerform Security Audit\nConduct a security audit and implement necessary measures\nMia Rodriguez\n14\n1\n";
+
+        System.out.println(ssss);
+
         String s = "[max]";
         System.out.println(s.substring(1, s.length() - 1));
 
@@ -61,6 +65,8 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
         } else {
             System.out.println("Pattern does not match input");
         }
+
+
 
 
         try {
