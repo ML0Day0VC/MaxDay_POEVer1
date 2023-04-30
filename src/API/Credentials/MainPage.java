@@ -59,11 +59,15 @@ public class MainPage extends Thread {
                                     > login - Provides page for user login
                                     > signup - Allows the user to create a new account
                                     > exit - Exits the program""");
-                    case "table" -> { // takes users into the table view and checks for if the user has logged in
-                        if (!Login.returnLoginStatus()) {
-                            System.err.println("User is not logged in. Please Sign in before continuing");
+
+                    case "login", "signin" -> { //logs the user in and checks and validates there credentials
+                        if (Login.returnLoginStatus()) {
+                            System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
+                        Login.loginUser();
+                        Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
+                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
                         //  currentUserFromCache = "max"; //TODO testing will need to remove for final release
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\tReport View:\n");
@@ -142,15 +146,6 @@ public class MainPage extends Thread {
                             }
                         }
                     }
-                    case "login", "signin" -> { //logs the user in and checks and validates there credentials
-                        if (Login.returnLoginStatus()) {
-                            System.err.println("Another User is already signed in. Please Sign out before continuing");
-                            break;
-                        }
-                        Login.loginUser();
-                        Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
-                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-                    }
                     case "signup" -> { // allows users to create accounts
                         /**
                          * TODO: i really wanna make something that prevents GIGO where poor data entry will lead to errors cause this is CLI.. and its annoying
@@ -162,7 +157,7 @@ public class MainPage extends Thread {
                         String sName = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
-                        if (!lm.checkUserName(uName)) { //chceks the usernames complexity
+                        if (!lm.checkUserName(uName)) { //checks the usernames complexity
                             System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\nProcess has been canceled. To try again please type \"signup\" and try again");
                             break;
                         }
