@@ -4,15 +4,10 @@
  */
 package API.Credentials;
 
-import API.Tools.FileManager;
-
 import java.io.*;
-import java.util.Scanner;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.List;
 
-public class LoginManager {
+public class Login {
     private static boolean isSignedIn = false;
 
     public static void loginUser() throws Exception {

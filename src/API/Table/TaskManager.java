@@ -4,18 +4,16 @@
  */
 package API.Table;
 
-import API.Credentials.LoginManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * @apiNote I wanna use an enum but failed. Its possible but its just not necessary in this scenario at all
+ * @apiNote I want to use an enum but failed. It's possible but its just not necessary in this scenario at all
  */
 public class TaskManager {
     private static int totalHours = 0;
@@ -42,7 +40,7 @@ public class TaskManager {
     }
 
     public static int returnTotalHours() {
-        //This feels like cheating but i have a loop running in the @printTaskDetails method so i just total it with a local variable
+        //This feels like cheating but I have a loop running in the @printTaskDetails method so I just total it with a local variable
         return totalHours;
     }
 
@@ -53,7 +51,7 @@ public class TaskManager {
         return null;
     }
 
-    public static void printTaskDetails(String uName) throws Exception { //This is meant to be a String. I'm sorry but I have done it very differently this whole project
+    public static void printTaskDetails(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
@@ -153,7 +151,7 @@ public class TaskManager {
         newObj.put("taskDesc", tDescription);
         newObj.put("devDetails", dDetails);
         newObj.put("taskDuration", tHours);
-        newObj.put("taskStatus", status); //TODO enum issues could occure here idk
+        newObj.put("taskStatus", status); //TODO enum issues could occur here idk
         jsonArray.add(newObj);
         System.out.println("Task successfully captured");
         update(uName, jsonArray.toJSONString());
@@ -174,7 +172,7 @@ public class TaskManager {
         JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
             case 1 -> newObj.put("taskName", newData);
-            case 2 -> newObj.put("taskDesc", newData); //TODO lenght of description check
+            case 2 -> newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
             case 3 -> newObj.put("devDetails", newData);
             case 4 -> newObj.put("taskDuration", newData);
             case 5 -> newObj.put("taskStatus", newData);

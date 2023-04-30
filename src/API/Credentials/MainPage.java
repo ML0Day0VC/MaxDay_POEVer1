@@ -9,7 +9,6 @@ import API.Table.TaskManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,7 +42,7 @@ public class MainPage extends Thread {
     public void start() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-            LoginManager lm = new LoginManager();
+            Login lm = new Login();
             System.out.println("Please type help for more information");
             while (!stopped) {
                 String[] strInput = reader.readLine().split(" ");
@@ -52,7 +51,7 @@ public class MainPage extends Thread {
                     case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
                             System.out.println("""
                                     > help - Displays info about the commands that can be run
-                                    > login - Provides page for user login
+                                    > login - Pr-ovides page for user login
                                     > signup - Allows the user to create a new account
                                     > exit - Exits the program""");
                     case "table" -> {
@@ -62,7 +61,7 @@ public class MainPage extends Thread {
                         }
 
                       */
-                        currentUserFromCache = "max"; //TODO testing
+                        currentUserFromCache = "max"; //TODO testing wil need to remove for final release
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\tTable View:\n");
                         boolean isStoppedTable = false;
@@ -79,7 +78,7 @@ public class MainPage extends Thread {
                                         > edit - Edits the table
                                         > remove - Removes a line from the table
                                         > logout - Logs out the user""");
-                                case "display" ->
+                                case "display" ->   
                                         TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
                                 case "dev list" ->
                                         taskManager.printFilteredDevsList(currentUserFromCache);
@@ -132,7 +131,7 @@ public class MainPage extends Thread {
                                 }
                                 case "logout", "signout" -> {
                                     System.out.println("User is now logged out");
-                                    LoginManager.setIsSignedIn(false);
+                                    Login.setIsSignedIn(false);
                                     isStoppedTable = true;
                                 }
                                 default ->
@@ -141,11 +140,11 @@ public class MainPage extends Thread {
                         }
                     }
                     case "login", "signin" -> {
-                        if (LoginManager.returnLoginStatus()) {
+                        if (Login.returnLoginStatus()) {
                             System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
-                        LoginManager.loginUser();
+                        Login.loginUser();
                         Collection<Object> values = cache.values();
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
                     }
@@ -165,7 +164,7 @@ public class MainPage extends Thread {
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
-                        String uPassword = LoginManager.readMaskedPass();
+                        String uPassword = Login.readMaskedPass();
                         if (lm.checkPasswordComplexity(uPassword)) {
                             DeepEncrypt.registerUser(uName, uPassword, fName, sName);
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
