@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class MainPage extends Thread {
-    private static HashMap<String, Object> cache = new HashMap<>();
-    private static boolean stopped = false;
+    private static HashMap<String, Object> cache = new HashMap<>(); // cache hashmap
+    private static final boolean stopped = false;
     private static String currentUserFromCache = "";
 
     public MainPage() {
@@ -24,12 +24,13 @@ public class MainPage extends Thread {
     public static Object value(String key) {
         return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
     }
-    // Caching value, so I don't need to carry object over all the threads and methods. I can legit pull it from everywhere i love it
+    // Caching value, so I don't need to carry object over all the threads and methods. I can legit pull it from everywhere I love it
 
     private static Object retrieveValueFromSource(String key) {
         return key.toUpperCase();
     }
 
+    //thread method to create a CLI input, so we can constantly type in the console to input data commands ect....
     public static void mainPage() {
         welcome();
         new MainPage();
@@ -39,34 +40,36 @@ public class MainPage extends Thread {
         new Thread(t1).start();
     }
 
+    /**
+     * This is the main interface control section. This works by constantly running in a while(true) loop. The loop constantly runs take in users keystrokes and creates and interpret event when new line is entered
+     * This means users can enter command line like commands to the terminal to register commands and inputs. This idea ive used multiple times when making back end terminals that need commands to be entered while a program is running on a seperate thread in the background
+     */
     public void start() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             Login lm = new Login();
             System.out.println("Please type help for more information");
             while (!stopped) {
-                String[] strInput = reader.readLine().split(" ");
-                if (strInput.length <= 0) continue;
+                String[] strInput = reader.readLine().split(" "); // detects for new line
+                if (strInput.length <= 0) continue;// if the line is greater than 0 then proceed with check
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
                     case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
                             System.out.println("""
                                     > help - Displays info about the commands that can be run
-                                    > login - Pr-ovides page for user login
+                                    > login - Provides page for user login
                                     > signup - Allows the user to create a new account
                                     > exit - Exits the program""");
-                    case "table" -> {
-                     /*   if (!LoginManager.returnLoginStatus()) {
+                    case "table" -> { // takes users into the table view and checks for if the user has logged in
+                        if (!Login.returnLoginStatus()) {
                             System.err.println("User is not logged in. Please Sign in before continuing");
                             break;
                         }
-
-                      */
-                        currentUserFromCache = "max"; //TODO testing wil need to remove for final release
+                        //  currentUserFromCache = "max"; //TODO testing will need to remove for final release
                         TaskManager taskManager = new TaskManager();
-                        System.out.println("\tTable View:\n");
+                        System.out.println("\tReport View:\n");
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
-                            switch (reader.readLine()) {
+                            switch (reader.readLine()) { //new help as there is now more commands as the user has logged in and has authorised access to them
                                 case "?", "help" -> System.out.println("""
                                         > help - Displays info about the commands that can be run
                                         > display - Shows the final report
@@ -78,21 +81,21 @@ public class MainPage extends Thread {
                                         > edit - Edits the table
                                         > remove - Removes a line from the table
                                         > logout - Logs out the user""");
-                                case "display" ->   
-                                        TaskManager.printTaskDetails(currentUserFromCache); //TODO: rename this to show report
+                                case "display" ->
+                                        TaskManager.printTaskDetails(currentUserFromCache); // displays the report
                                 case "dev list" ->
-                                        taskManager.printFilteredDevsList(currentUserFromCache);
-                                case "dev task list" -> {
+                                        TaskManager.printFilteredDevsList(currentUserFromCache); // lists the developers
+                                case "dev task list" -> { //lists developers with tasks according to their names
                                     System.out.println("Please list the name of the developer");
                                     TaskManager.printFilteredTaskDetails(currentUserFromCache, reader.readLine());
                                 }
-                                case "dev max duration" ->
+                                case "dev max duration" -> // lists the developer with the longest task
                                         TaskManager.printFilteredTaskDevLongest(currentUserFromCache);
-                                case "dev task search" -> {
+                                case "dev task search" -> { //lists the developer with a search key per task name
                                     System.out.println("Please enter the name of the task to search");
                                     TaskManager.printFilteredTaskDevSearch(currentUserFromCache, reader.readLine());
                                 }
-                                case "add" -> {
+                                case "add" -> { // adds a new task to the table
                                     String[] str = new String[6];
                                     System.out.println("Please prepare to enter the data for the new entry\nPlease enter the name of the task"); // 0
                                     str[0] = reader.readLine();
@@ -106,7 +109,7 @@ public class MainPage extends Thread {
                                     str[4] = reader.readLine();
                                     taskManager.addItem(currentUserFromCache, str[0], str[1], str[2], Integer.parseInt(str[3]), Integer.parseInt(str[4]));
                                 }
-                                case "edit" -> {
+                                case "edit" -> { //edits current data within the existing table
                                     System.out.println("Please prepare to enter the data for the edited entry\nPlease select the index of the entry you would like to edit");
                                     int var1 = Integer.parseInt(reader.readLine());
                                     System.out.println("""
@@ -122,14 +125,14 @@ public class MainPage extends Thread {
                                     String var3 = reader.readLine();
                                     taskManager.edit(currentUserFromCache, var1, var2, var3);
                                 }
-                                case "remove", "delete" -> {
+                                case "remove", "delete" -> { // allows users to delete a specific task
                                     System.out.println("Please input the num of the entry you would like to remove");
                                     int var4 = Integer.parseInt(reader.readLine());
                                     System.out.printf("ARE YOU SURE YOU WANT TO REMOVE ENTRY %d FROM THE TABLE?\n type  \"yes\" to confirm\n to back out type\"no\"%n", var4);
                                     if (reader.readLine().equalsIgnoreCase("yes"))
                                         taskManager.removeItem(currentUserFromCache, var4);
                                 }
-                                case "logout", "signout" -> {
+                                case "logout", "signout" -> { //logs the user out meaning that they cannot access the table view anymore
                                     System.out.println("User is now logged out");
                                     Login.setIsSignedIn(false);
                                     isStoppedTable = true;
@@ -139,16 +142,16 @@ public class MainPage extends Thread {
                             }
                         }
                     }
-                    case "login", "signin" -> {
+                    case "login", "signin" -> { //logs the user in and checks and validates there credentials
                         if (Login.returnLoginStatus()) {
                             System.err.println("Another User is already signed in. Please Sign out before continuing");
                             break;
                         }
                         Login.loginUser();
-                        Collection<Object> values = cache.values();
+                        Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
                     }
-                    case "signup" -> {
+                    case "signup" -> { // allows users to create accounts
                         /**
                          * TODO: i really wanna make something that prevents GIGO where poor data entry will lead to errors cause this is CLI.. and its annoying
                          *  //  if (!fName.isEmpty());
@@ -159,29 +162,28 @@ public class MainPage extends Thread {
                         String sName = reader.readLine();
                         System.out.println("Please Enter your username");
                         String uName = reader.readLine();
-                        if (!lm.checkUserName(uName)) {
+                        if (!lm.checkUserName(uName)) { //chceks the usernames complexity
                             System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length\nProcess has been canceled. To try again please type \"signup\" and try again");
                             break;
                         }
                         System.out.println("Please Enter your password [ Please note the password must at least be 8 characters long, must contain a capital letter, a number and a special character ]");
-                        String uPassword = Login.readMaskedPass();
-                        if (lm.checkPasswordComplexity(uPassword)) {
-                            DeepEncrypt.registerUser(uName, uPassword, fName, sName);
+                        String uPassword = Login.readMaskedPass(); // masks the password
+                        if (lm.checkPasswordComplexity(uPassword)) { // checks the passwords complexity
+                            DeepEncrypt.registerUser(uName, uPassword, fName, sName); //encrypts the password
                             System.out.println("Password successfully captured\nPlease Sign in if you want to continue");
                         } else
                             System.out.println("Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character\n\t Process has been canceled.  To try again please type \"signup\" and try again");
                     }
-                    case "exit" -> System.exit(420);
+                    case "exit" -> System.exit(420); // exits the program
                     default -> System.err.println("Unknown command. Run \"help\" for more info on commands");
                 }
             }
-            System.out.println("Stopped");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void welcome() {
+    public static void welcome() { // a nice ascii big lettering that 90 percent of console apps have that make it just a little nicer
         System.out.println("\u001b[32m\n _    _      _                             _           _____  _     _____ _                 \n" + "| |  | |    | |                           | |         /  __ \\| |   |_   _| |                \n" + "| |  | | ___| | ___ ___  _ __ ___   ___   | |_ ___    | /  \\/| |     | | | |__   __ _ _ __  \n" + "| |/\\| |/ _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\  | __/ _ \\   | |    | |     | | | '_ \\ / _` | '_ \\ \n" + "\\  /\\  /  __/ | (_| (_) | | | | | |  __/  | || (_) |  | \\__/\\| |_____| |_| |_) | (_| | | | |\n" + " \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|   \\__\\___/    \\____/\\_____/\\___/|_.__/ \\__,_|_| |_|\n" + "                                                                                            \n");
     }
 }

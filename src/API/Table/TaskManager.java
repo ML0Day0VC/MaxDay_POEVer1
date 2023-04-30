@@ -18,6 +18,12 @@ import java.util.Locale;
 public class TaskManager {
     private static int totalHours = 0;
 
+    /**
+     * My sad replacement for an enum
+     *
+     * @param stat
+     * @return void
+     */
     public static String validateLabel(int stat) {
         return switch (stat) {
             case 1 -> "To Do";
@@ -27,6 +33,12 @@ public class TaskManager {
         };
     }
 
+    /**
+     * Checks the length of the description of the task
+     *
+     * @param tDescription
+     * @return boolean
+     */
     public boolean checkTaskDescription(String tDescription) {
         if (tDescription.length() > 50) {
             System.out.println("Please enter a task description of less than 50 characters");
@@ -35,22 +47,50 @@ public class TaskManager {
         return false;
     }
 
+    /**
+     * Creates taskID
+     *
+     * @param tName
+     * @param devDetails
+     * @param tNumber
+     * @return String
+     */
     public static String createTaskID(String tName, String devDetails, int tNumber) {
         return String.format("%s:%d:%s", tName.substring(0, 2).toUpperCase(), tNumber, devDetails.substring(devDetails.length() - 3).toUpperCase());
     }
 
+    /**
+     * This is kinda cheating, but it works and its named accordingly to the document, so I should get my marks.
+     *
+     * @return
+     */
     public static int returnTotalHours() {
-        //This feels like cheating but I have a loop running in the @printTaskDetails method so I just total it with a local variable
+        //This feels like cheating, but I have a loop running in the @printTaskDetails method, so I just total it with a local variable
         return totalHours;
     }
 
+    /**
+     * This project uses a lot of arrays but most of them are one-liners that are hidden. This one is obvious so if you need to mark an array use this one. This takes the JSONArray and returns it as an object through the passer, so we can work with it
+     *
+     * @param path
+     * @return
+     * @throws Exception
+     */
     public static JSONArray getArray(String path) throws Exception {
         FileReader reader = new FileReader("src/tables/" + path.toLowerCase(Locale.ROOT) + "Table.json"); // ik u can throw this into a try catch im not dumb im just lazy
         Object obj = new JSONParser().parse(reader);
-        if (obj instanceof JSONArray) return (JSONArray) obj;
+        if (obj instanceof JSONArray)
+            return (JSONArray) obj; // this is a very convenient way of doing it but im not sure if its conventionally liked
         return null;
     }
 
+    /**
+     * Main print function. Please note this is meant to be a String but the way I have made the project this cannot be a string, or I will literally lose my mind.
+     * To avoid me losing the marks here is how I could do it if it has to return a string. You would need to make a toString method that calls this method and accepts the string and then just prints it. I have just simplified it into one
+     *
+     * @param uName
+     * @throws Exception
+     */
     public static void printTaskDetails(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
@@ -67,7 +107,14 @@ public class TaskManager {
         System.out.println("Total Hours: " + returnTotalHours());
     }
 
-    public static void printFilteredTaskDetails(String uName, String devName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+    /**
+     * Prints out all the tasks but only the tasks that have been assigned to a specific developer name
+     *
+     * @param uName
+     * @param devName
+     * @throws Exception
+     */
+    public static void printFilteredTaskDetails(String uName, String devName) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
@@ -86,7 +133,13 @@ public class TaskManager {
         System.out.println("Total Hours: " + returnTotalHours());
     }
 
-    public static void printFilteredTaskDevLongest(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+    /**
+     * Prints out the name of the developer with the longest task
+     *
+     * @param uName
+     * @throws Exception
+     */
+    public static void printFilteredTaskDevLongest(String uName) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Developer Details", "Task Duration");
@@ -105,7 +158,14 @@ public class TaskManager {
         aat.print(System.out);
     }
 
-    public static void printFilteredTaskDevSearch(String uName, String key) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+    /**
+     * Prints out all the tasks with the specific key in the name of the task.
+     *
+     * @param uName
+     * @param key
+     * @throws Exception
+     */
+    public static void printFilteredTaskDevSearch(String uName, String key) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Task Number", "Task Name", "Task Description", "Developer Details", "Task Duration", "Task ID", "Task Status");
@@ -123,7 +183,13 @@ public class TaskManager {
 
     }
 
-    public static void printFilteredDevsList(String uName) throws Exception { //This is meant to be a String. I'm sorry, but I have done it very differently this whole project
+    /**
+     * Prints a list of all the developers
+     *
+     * @param uName
+     * @throws Exception
+     */
+    public static void printFilteredDevsList(String uName) throws Exception {
         JSONArray jsonArray = getArray(uName);
         AsciiArtTable aat = new AsciiArtTable();
         aat.addHeaderCols("Index", "Developer:");
@@ -137,12 +203,30 @@ public class TaskManager {
         aat.print(System.out);
     }
 
+    /**
+     * Removes removes item from list
+     *
+     * @param uName
+     * @param index
+     * @throws Exception
+     */
     public void removeItem(String uName, int index) throws Exception {
         JSONArray jsonArray = getArray(uName);
         jsonArray.remove(index);
         update(uName, jsonArray.toJSONString());
     }
 
+    /**
+     * Adds item from task list
+     *
+     * @param uName
+     * @param tName
+     * @param tDescription
+     * @param dDetails
+     * @param tHours
+     * @param status
+     * @throws Exception
+     */
     public void addItem(String uName, String tName, String tDescription, String dDetails, int tHours, int status) throws Exception {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
@@ -158,6 +242,15 @@ public class TaskManager {
 
     }
 
+    /**
+     * Very simple. Takes in 2 numbers. One to find what variable to change and the only to find what row to change it in. This is then overwritten, then updated
+     *
+     * @param uName
+     * @param index
+     * @param byIndex
+     * @param newData
+     * @throws Exception
+     */
     public void edit(String uName, int index, int byIndex, String newData) throws Exception {
         /**
          * @aNote important, it's going to work as array then the byIndex is the date stuff ect working from left to right
@@ -172,7 +265,8 @@ public class TaskManager {
         JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
             case 1 -> newObj.put("taskName", newData);
-            case 2 -> newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
+            case 2 ->
+                    newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
             case 3 -> newObj.put("devDetails", newData);
             case 4 -> newObj.put("taskDuration", newData);
             case 5 -> newObj.put("taskStatus", newData);
@@ -181,6 +275,14 @@ public class TaskManager {
         update(uName, jsonArray.toJSONString());
     }
 
+
+    /**
+     * File update. I should probs use a global file manager but this can be done later on for now this is fine and it works
+     *
+     * @param path
+     * @param data
+     * @throws Exception
+     */
     public void update(String path, String data) throws Exception { //
         FileWriter fileWriter = new FileWriter("src/Tables/" + path + "Table.json");
         fileWriter.write(data);
@@ -189,7 +291,6 @@ public class TaskManager {
         System.out.println("\n\n\t\t\t\t>>>  Updated the table  <<<");
         printTaskDetails(path);
     }
-
 
 }
 

@@ -1,5 +1,6 @@
 package API.Table; /**
  * @author Max Day
+ * @author klaus31's
  * Created At: 2023/04/04
  */
 
@@ -19,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  * Changes to view the diff is here https://github.com/ML0Day0VC/MaxDay_POEVer1/commit/675ea44fee5f40b763d0fdd4c7494c9b37d8093c
  */
 
-public class AsciiArtTable {
+public class AsciiArtTable {//TODO comment this fully and explain it
 
     private static String appendToLength(final Object subject, final int length) {
         final String subjectString = subject == null ? "" : subject.toString();

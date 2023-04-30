@@ -10,6 +10,11 @@ import java.util.regex.Pattern;
 public class Login {
     private static boolean isSignedIn = false;
 
+    /**
+     * Facilitates the login of a user by requesting the username and then the password of said user
+     * A side note is that the username of the user is cached here because it means that we can access this name wherever in the program we are
+     * @throws Exception
+     */
     public static void loginUser() throws Exception {
         System.out.println("Please Enter Username");
         String uName = new BufferedReader(new InputStreamReader(System.in)).readLine();
@@ -57,6 +62,12 @@ public class Login {
         return pRegex.matcher(uPassword).matches();
     }
 
+    /**
+     *  Creates an Eraserthread instance that causes all typed characters to be replaced by asterisks (*) to prevent the actual password from being seen
+     *  Using a buffered input to read the input stream is better than a scanner as it stores large chunks of input as an internal buffer which is more efficient
+     * @return
+     * @throws Exception
+     */
     public static String readMaskedPass() throws Exception {
         EraserThread et = new EraserThread();
         Thread mask = new Thread(et);

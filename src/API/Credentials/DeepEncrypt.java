@@ -24,15 +24,25 @@ import java.util.Scanner;
 
 public class DeepEncrypt {
 
+    /**
+     * creates and entry for a new user to be added to the database. It creates a new user and takes in there credentials and stores it with the password encrypted
+     * @param uName
+     * @param uPassword
+     * @param fName
+     * @param sName
+     * @throws Exception
+     */
     public static void registerUser(String uName, String uPassword, String fName, String sName) throws Exception {
-        String entry = String.format("%s|%s|%s|%s|%s", uName, generateStorngPasswordHash(uPassword), fName, sName);
+        String entry = String.format("%s|%s|%s|%s|%s", uName, generateStrongPasswordHash(uPassword), fName, sName);
         new FileManager().addEntry(entry);
         new FileManager().createTBLManager(uName);
         System.out.println("Wrote password");
     }
 
     /**
-     * Boolean to check the validity of a username and password when checked in the database
+     * Checks wether the username and password of a user are valid. It is done by taking the store encrypted password and comparing it to the password that is just been entered. The password is encrypted so that the stored and just entered
+     * passwords are both encrypted and thus they are-compared meaning the actual inputted password is never actually stored for security measures
+     * This is mainly done in ValidatePassword method but this method manages the interaction
      * @param inUser
      * @param inPass
      * @return
@@ -57,14 +67,14 @@ public class DeepEncrypt {
     }
 
     /**
-     * Runs generate hash to create a hashed password as a string
+     * Runs generate hash to create a hashed password as a string strong
      *
      * @param password
      * @return hashed password as a String
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    private static String generateStorngPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private static String generateStrongPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] salt = getSalt();
         PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 1000, 64 * 8);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -84,7 +94,8 @@ public class DeepEncrypt {
     }
 
     /**
-     * converts the hex to byte array then encrypts the entered password and then checks the difference between the encrypted and the stored encrypted password
+     * Converts the hex to byte array then encrypts the entered password and then checks the difference between the encrypted and the stored encrypted password
+     * NOTE the password is never actually saved only the encrypted form of it
      * @param originalPassword
      * @param storedPassword
      * @return
@@ -99,7 +110,7 @@ public class DeepEncrypt {
         return Arrays.equals(hash, testHash);
     }
     /**
-     * converts the Byte array to a string
+     * Converts the Byte array to a string
      * @param array
      * @return byte array of hex characters
      */
