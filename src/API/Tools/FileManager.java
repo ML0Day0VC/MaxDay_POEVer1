@@ -14,9 +14,9 @@ import java.util.Locale;
 public class FileManager {
 
     /**
-     * @apiNote If anyone is looking at this file im sorry i just needed a miscellaneous class to chuck some file stuff in
+     * @apiNote If anyone is looking at this file im sorry I just needed a miscellaneous class to chuck some file stuff in
      */
-    private static final String PATH = "passwords.txt";
+    private static final String PATH = "src/Tables/passwords.txt";
 
     public void writeFile(String data) throws IOException { // for anyone who wants to say that throwing it here is stupid then I say cope
         FileWriter fWriter = new FileWriter(PATH);
@@ -37,7 +37,7 @@ public class FileManager {
     }
     //////TBLManager//////
 
-    //TODO PLEASE IF U SEE THIS DO THIS PLEASEEEEEEEEE
+    //TODO DESPERATELY need to clean the file manager up
     public void createTBLManager(String uName) throws IOException {
         // Files.createFile(Path.of("src/tables/" + uName.toLowerCase(Locale.ROOT) + "Table.json"));
         byte data[] = "[{\"nTask\": \"Example task name\",\"dTask\": \"Example task description\",\"date\": \"22/22/2003\",\"isCompleated\": false}]".getBytes();

@@ -30,6 +30,7 @@ src:
         booby_1Table.json
         kyl_1Table.json
         maxTable.json
+        passwords.txt
 ```
 
 ## Commands:
