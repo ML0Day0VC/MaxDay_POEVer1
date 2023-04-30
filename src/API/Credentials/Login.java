@@ -45,7 +45,7 @@ public class Login {
          * _. matches with underscores
          * *$ matches the end of the string but makes it so that the underscore can appear anywhere in the string (abbreviated)
          */
-        Pattern uRegex = Pattern.compile("^.{4,}_.*$");
+        Pattern uRegex = Pattern.compile("^.{3,}_.*$");
         return uRegex.matcher(userName).matches();
     }
 

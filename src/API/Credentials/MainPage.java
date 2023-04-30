@@ -19,7 +19,7 @@ public class MainPage extends Thread {
     private static String currentUserFromCache = "";
 
     public MainPage() {
-    }//TODO add more info to the user input on like if the user messes up and stuff. how to prcede with the application
+    }
 
     public static Object value(String key) {
         return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
@@ -66,6 +66,8 @@ public class MainPage extends Thread {
                             break;
                         }
                         Login.loginUser();
+                        if (!Login.returnLoginStatus())
+                            break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
                         //  currentUserFromCache = "max"; //TODO testing will need to remove for final release

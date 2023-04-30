@@ -33,7 +33,7 @@ public class DeepEncrypt {
      * @throws Exception
      */
     public static void registerUser(String uName, String uPassword, String fName, String sName) throws Exception {
-        String entry = String.format("%s|%s|%s|%s|%s", uName, generateStrongPasswordHash(uPassword), fName, sName);
+        String entry = String.format("%s|%s|%s|%s", uName, generateStrongPasswordHash(uPassword), fName, sName);
         new FileManager().addEntry(entry);
         new FileManager().createTBLManager(uName);
         System.out.println("Wrote password");
