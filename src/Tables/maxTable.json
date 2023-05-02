@@ -1,1 +1,51 @@
-[{"taskDesc":"a new task name ","devDetails":"James smothies","taskDuration":22,"taskName":"blobs task","taskStatus":1},{"taskDesc":"Add a login system to the website","devDetails":"James Smith","taskDuration":10,"taskName":"Implement Login","taskStatus":1},{"taskDesc":"Redesign the website's UI","devDetails":"Emily Johnson","taskDuration":15,"taskName":"Update UI","taskStatus":2},{"taskDesc":"Identify and fix any bugs in the website","devDetails":"Sophia Davis","taskDuration":8,"taskName":"Fix Bugs","taskStatus":1},{"taskDesc":"Add a payment gateway to the website","devDetails":"William Garcia","taskDuration":20,"taskName":"Integrate Payment Gateway","taskStatus":2},{"taskDesc":"Improve the website's loading speed","devDetails":"Olivia Martinez","taskDuration":16,"taskName":"Optimize Website Speed","taskStatus":3},{"taskDesc":"Create a mobile app for the website","devDetails":"Ethan Wilson","taskDuration":25,"taskName":"Develop Mobile App","taskStatus":1}]
+[
+  {
+    "taskDesc": "a new task name ",
+    "devDetails": "James smothies",
+    "taskDuration": 22,
+    "taskName": "blobs task",
+    "taskStatus": 1
+  },
+  {
+    "taskDesc": "Add a login system to the website",
+    "devDetails": "James Smith",
+    "taskDuration": 10,
+    "taskName": "Implement Login",
+    "taskStatus": 1
+  },
+  {
+    "taskDesc": "Redesign the website's UI",
+    "devDetails": "Emily Johnson",
+    "taskDuration": 15,
+    "taskName": "Update UI",
+    "taskStatus": 2
+  },
+  {
+    "taskDesc": "Identify and fix any bugs in the website",
+    "devDetails": "Sophia Davis",
+    "taskDuration": 8,
+    "taskName": "Fix Bugs",
+    "taskStatus": 1
+  },
+  {
+    "taskDesc": "Add a payment gateway to the website",
+    "devDetails": "William Garcia",
+    "taskDuration": 20,
+    "taskName": "Integrate Payment Gateway",
+    "taskStatus": 2
+  },
+  {
+    "taskDesc": "Improve the website's loading speed",
+    "devDetails": "Olivia Martinez",
+    "taskDuration": 16,
+    "taskName": "Optimize Website Speed",
+    "taskStatus": 3
+  },
+  {
+    "taskDesc": "Create a mobile app for the website",
+    "devDetails": "Ethan Wilson",
+    "taskDuration": 25,
+    "taskName": "Develop Mobile App",
+    "taskStatus": 1
+  }
+]

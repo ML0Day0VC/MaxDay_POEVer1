@@ -18,7 +18,7 @@ public class FileManager {
      */
     private static final String PATH = "src/Tables/passwords.txt";
 
-    public void writeFile(String data) throws IOException { // for anyone who wants to say that throwing it here is stupid then I say cope
+    public void writeFile(String data) throws IOException { // just be lazy and throw an exception... not great practice though
         FileWriter fWriter = new FileWriter(PATH);
         fWriter.write(data);
         fWriter.close();
@@ -39,8 +39,7 @@ public class FileManager {
 
     //TODO DESPERATELY need to clean the file manager up
     public void createTBLManager(String uName) throws IOException {
-        // Files.createFile(Path.of("src/tables/" + uName.toLowerCase(Locale.ROOT) + "Table.json"));
-        byte data[] = "[{\"nTask\": \"Example task name\",\"dTask\": \"Example task description\",\"date\": \"22/22/2003\",\"isCompleated\": false}]".getBytes();
+        byte[] data = "[{\"taskDesc\": \"Test task description\",\"devDetails\": \"Test Developers name \",\"taskDuration\": 12,\"taskName\": \"Test task name\",\"taskStatus\": 1}]".getBytes();
         Path file = Paths.get("src/Tables/" + uName.toLowerCase(Locale.ROOT) + "Table.json");
         Files.write(file, data);
 

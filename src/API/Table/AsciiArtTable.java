@@ -131,7 +131,7 @@ public class AsciiArtTable {
      *
      * @return
      */
-    public String getOutput() {//TODO convert to string builder
+    public String getOutput() {
         while (contentCols.size() % headerCols.size() != 0)
             contentCols.add("");
         StringBuilder result = new StringBuilder();
@@ -226,7 +226,7 @@ public class AsciiArtTable {
      * @param right
      * @return
      */
-    private String row(final List<Object> contents, final char left, final char columnSeparator, final char right) { //TODO STRINGBUILDERRRRRRR.....
+    private String row(final List<Object> contents, final char left, final char columnSeparator, final char right) {
         final int[] colWidths = getColWidths();
         StringBuilder result = new StringBuilder();
         List<List<String>> linesContents = splitToMaxLength(contents, maxColumnWidth);
@@ -263,12 +263,11 @@ public class AsciiArtTable {
         final int tableLength = getTableLength();
         final int contentWidth = tableLength - (2 * padding) - 2;
         final String[] headlineLines = headline.split("(?<=\\G.{" + contentWidth + "})");
-        // final String[] headlineLines = headline.split("(?<=\\G.{" + contentWidth + "})"); // why does this not work it is excatly the same...
-        String result = "";
-        for (String headlineLine : headlineLines) {//TODO string builder lol
-            result += left + StringUtils.repeat(' ', padding) + StringUtils.rightPad(headlineLine, tableLength - padding - 2) + right + System.lineSeparator();
+        StringBuilder result = new StringBuilder();
+        for (String headlineLine : headlineLines) {
+            result.append(left).append(StringUtils.repeat(' ', padding)).append(StringUtils.rightPad(headlineLine, tableLength - padding - 2)).append(right).append(System.lineSeparator());
         }
-        return result;
+        return result.toString();
     }
 
     /**

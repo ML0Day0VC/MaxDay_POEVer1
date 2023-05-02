@@ -265,7 +265,10 @@ public class TaskManager {
         JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
             case 1 -> newObj.put("taskName", newData);
-            case 2 -> newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
+            case 2 -> {
+                if (checkTaskDescription(newData)) return;
+                newObj.put("taskDesc", newData);
+            }
             case 3 -> newObj.put("devDetails", newData);
             case 4 -> newObj.put("taskDuration", newData);
             case 5 -> newObj.put("taskStatus", newData);
