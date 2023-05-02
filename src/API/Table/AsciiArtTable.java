@@ -134,39 +134,39 @@ public class AsciiArtTable {
     public String getOutput() {//TODO convert to string builder
         while (contentCols.size() % headerCols.size() != 0)
             contentCols.add("");
-        String result = "";
+        StringBuilder result = new StringBuilder();
         if (headlines.isEmpty()) {
-            result += row(borderCharacters.charAt(0), borderCharacters.charAt(1), borderCharacters.charAt(2), borderCharacters.charAt(3)) + System.lineSeparator();
+            result.append(row(borderCharacters.charAt(0), borderCharacters.charAt(1), borderCharacters.charAt(2), borderCharacters.charAt(3))).append(System.lineSeparator());
         } else {
-            result += row(borderCharacters.charAt(0), borderCharacters.charAt(1), borderCharacters.charAt(1), borderCharacters.charAt(3)) + System.lineSeparator();
+            result.append(row(borderCharacters.charAt(0), borderCharacters.charAt(1), borderCharacters.charAt(1), borderCharacters.charAt(3))).append(System.lineSeparator());
             for (Object headline : headlines) {
-                result += rowHeadline(headline.toString(), borderCharacters.charAt(4), borderCharacters.charAt(4));
+                result.append(rowHeadline(headline.toString(), borderCharacters.charAt(4), borderCharacters.charAt(4)));
                 if (headlines.indexOf(headline) == headlines.size() - 1) {
                     if (outputOfHeaderColsIsRequested()) {
-                        result += row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(7), borderCharacters.charAt(8)) + System.lineSeparator();
+                        result.append(row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(7), borderCharacters.charAt(8))).append(System.lineSeparator());
                     } else {
-                        result += row(borderCharacters.charAt(10), borderCharacters.charAt(1), borderCharacters.charAt(2), borderCharacters.charAt(11)) + System.lineSeparator();
+                        result.append(row(borderCharacters.charAt(10), borderCharacters.charAt(1), borderCharacters.charAt(2), borderCharacters.charAt(11))).append(System.lineSeparator());
                     }
                 } else if (!minimiseHeight) {
-                    result += row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(6), borderCharacters.charAt(8)) + System.lineSeparator();
+                    result.append(row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(6), borderCharacters.charAt(8))).append(System.lineSeparator());
                 }
             }
         }
         if (outputOfHeaderColsIsRequested()) {
-            result += row(headerCols, borderCharacters.charAt(4), borderCharacters.charAt(12), borderCharacters.charAt(4)) + System.lineSeparator();
-            result += row(borderCharacters.charAt(10), borderCharacters.charAt(1), borderCharacters.charAt(9), borderCharacters.charAt(11)) + System.lineSeparator();
+            result.append(row(headerCols, borderCharacters.charAt(4), borderCharacters.charAt(12), borderCharacters.charAt(4))).append(System.lineSeparator());
+            result.append(row(borderCharacters.charAt(10), borderCharacters.charAt(1), borderCharacters.charAt(9), borderCharacters.charAt(11))).append(System.lineSeparator());
         }
         int col = 0;
         while (col < contentCols.size()) {
-            result += row(contentCols.subList(col, col + headerCols.size()), borderCharacters.charAt(4), borderCharacters.charAt(12), borderCharacters.charAt(4)) + System.lineSeparator();
+            result.append(row(contentCols.subList(col, col + headerCols.size()), borderCharacters.charAt(4), borderCharacters.charAt(12), borderCharacters.charAt(4))).append(System.lineSeparator());
             col += headerCols.size();
             if (col == contentCols.size()) {
-                result += row(borderCharacters.charAt(13), borderCharacters.charAt(1), borderCharacters.charAt(14), borderCharacters.charAt(15)) + System.lineSeparator();
+                result.append(row(borderCharacters.charAt(13), borderCharacters.charAt(1), borderCharacters.charAt(14), borderCharacters.charAt(15))).append(System.lineSeparator());
             } else if (!minimiseHeight) {
-                result += row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(16), borderCharacters.charAt(8)) + System.lineSeparator();
+                result.append(row(borderCharacters.charAt(5), borderCharacters.charAt(6), borderCharacters.charAt(16), borderCharacters.charAt(8))).append(System.lineSeparator());
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -207,14 +207,14 @@ public class AsciiArtTable {
      */
     private String row(final char left, final char middle, final char columnSeparator, final char right) {
         final int[] colWidths = getColWidths();
-        String result = left + "";
+        StringBuilder result = new StringBuilder(left + "");
         int col = 0;
         while (col < headerCols.size()) {
-            result += StringUtils.repeat(middle, padding + colWidths[col] + padding);
+            result.append(StringUtils.repeat(middle, padding + colWidths[col] + padding));
             col++;
-            result += col == headerCols.size() ? right : columnSeparator;
+            result.append(col == headerCols.size() ? right : columnSeparator);
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -228,27 +228,27 @@ public class AsciiArtTable {
      */
     private String row(final List<Object> contents, final char left, final char columnSeparator, final char right) { //TODO STRINGBUILDERRRRRRR.....
         final int[] colWidths = getColWidths();
-        String result = "";
+        StringBuilder result = new StringBuilder();
         List<List<String>> linesContents = splitToMaxLength(contents, maxColumnWidth);
         for (List<String> lineContents : linesContents) {
             int col = 0;
-            result += left;
+            result.append(left);
             while (col < headerCols.size()) {
                 if (alignLeft(linesContents, col)) {
-                    result += StringUtils.repeat(' ', padding);
-                    result += appendToLength(lineContents.get(col), padding + colWidths[col]);
+                    result.append(StringUtils.repeat(' ', padding));
+                    result.append(appendToLength(lineContents.get(col), padding + colWidths[col]));
                 } else {
-                    result += prependToLength(lineContents.get(col), padding + colWidths[col]);
-                    result += StringUtils.repeat(' ', padding);
+                    result.append(prependToLength(lineContents.get(col), padding + colWidths[col]));
+                    result.append(StringUtils.repeat(' ', padding));
                 }
                 col++;
-                result += col == headerCols.size() ? right : columnSeparator;
+                result.append(col == headerCols.size() ? right : columnSeparator);
             }
             if (linesContents.indexOf(lineContents) != linesContents.size() - 1) {
-                result += System.lineSeparator();
+                result.append(System.lineSeparator());
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
