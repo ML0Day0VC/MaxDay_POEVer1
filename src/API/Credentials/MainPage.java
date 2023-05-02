@@ -50,7 +50,7 @@ public class MainPage extends Thread {
             Login lm = new Login();
             System.out.println("Please type help for more information");
             while (!stopped) {
-                String[] strInput = reader.readLine().split(" "); // detects for new line
+                String[] strInput = reader.readLine().split(" ");
                 if (strInput.length <= 0) continue;// if the line is greater than 0 then proceed with check
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
                     case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
