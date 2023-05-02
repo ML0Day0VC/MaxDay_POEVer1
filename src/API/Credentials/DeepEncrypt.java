@@ -18,14 +18,15 @@ import java.util.Scanner;
 
 /**
  * Author: Max Day
- * This was adapted from a marked project PAT that was done when I was in highs-cool. It was meant for SQL Server logins as a backend type server. I have adapted it to work with this.
+ * This was adapted from a marked project PAT that was done when I was in high school. It was meant for SQL Server logins as a backend type server. I have adapted it to work with this.
  * The concept was derived from the Oracle Documentation and I have a full explanation on how it works. I have now decided to rewrite it slightly.
  */
 
 public class DeepEncrypt {
 
     /**
-     * creates and entry for a new user to be added to the database. It creates a new user and takes in there credentials and stores it with the password encrypted
+     * creates and entry for a new user to be added to the database. It creates a new user and takes in their credentials and stores it with the password encrypted
+     *
      * @param uName
      * @param uPassword
      * @param fName
@@ -40,9 +41,10 @@ public class DeepEncrypt {
     }
 
     /**
-     * Checks wether the username and password of a user are valid. It is done by taking the store encrypted password and comparing it to the password that is just been entered. The password is encrypted so that the stored and just entered
+     * Checks weather the username and password of a user are valid. It is done by taking the store encrypted password and comparing it to the password that is just been entered. The password is encrypted so that the stored and just entered
      * passwords are both encrypted and thus they are-compared meaning the actual inputted password is never actually stored for security measures
      * This is mainly done in ValidatePassword method but this method manages the interaction
+     *
      * @param inUser
      * @param inPass
      * @return
@@ -56,7 +58,7 @@ public class DeepEncrypt {
             String[] parts = scanner.nextLine().split("\\|");
             if (inUser.equals(parts[0])) { // username found
                 if (validatePassword(inPass, parts[1])) {
-                    System.out.printf("Welcome %s, %s it is great to see you again.%n", parts[2], parts[3]);
+                    System.out.printf("Welcome %s, %s it is great to see you again.\n", parts[2], parts[3]);
                     return true;
                 } else {
                     return false;
@@ -84,6 +86,7 @@ public class DeepEncrypt {
 
     /**
      * Generates a salt using the secure random class - algo sharping 1
+     *
      * @return byte array a random salt
      * @throws NoSuchAlgorithmException
      */
@@ -96,6 +99,7 @@ public class DeepEncrypt {
     /**
      * Converts the hex to byte array then encrypts the entered password and then checks the difference between the encrypted and the stored encrypted password
      * NOTE the password is never actually saved only the encrypted form of it
+     *
      * @param originalPassword
      * @param storedPassword
      * @return
@@ -109,8 +113,10 @@ public class DeepEncrypt {
         byte[] testHash = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1").generateSecret(spec).getEncoded();
         return Arrays.equals(hash, testHash);
     }
+
     /**
      * Converts the Byte array to a string
+     *
      * @param array
      * @return byte array of hex characters
      */
@@ -118,6 +124,7 @@ public class DeepEncrypt {
         BigInteger bi = new BigInteger(1, array);
         return String.format("%0" + (array.length << 1) + "x", bi);
     }
+
     /**
      * Converts hex to byte array
      *

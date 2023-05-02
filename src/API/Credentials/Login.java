@@ -30,7 +30,7 @@ public class Login {
         isSignedIn = inSignedIn;
     }
 
-    public static boolean returnLoginStatus() { //
+    public static boolean returnLoginStatus() {
         /**
          *  returnLoginStatus was asked to bea String, but it's just better to have it a Boolean. to prevent me from loosing marks the way I would do it if it was a string:
          *  I would be to create 2 enum constants one called FAILED and the other SUCCESS. These would be strings, and they can be used as constants using .equals() which would return true or false
@@ -38,7 +38,7 @@ public class Login {
         return isSignedIn;
     }
 
-    public boolean checkUserName(String userName) {
+    public boolean checkUserName(String userName) { // very good test site for regex's:  https://regex101.com
         /**Explanation of regex:
          * ^ matches the start of the string
          * {0,4} matches strings with only 4 characters in length
@@ -49,7 +49,7 @@ public class Login {
         return uRegex.matcher(userName).matches();
     }
 
-    public boolean checkPasswordComplexity(String uPassword) {
+    public boolean checkPasswordComplexity(String uPassword) { // very good test site for regex's:  https://regex101.com
         //"^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$"
         /**Explanation of regex:
          * [a-z] matches lowercase characters
@@ -65,7 +65,7 @@ public class Login {
     /**
      *  Creates an Eraserthread instance that causes all typed characters to be replaced by asterisks (*) to prevent the actual password from being seen
      *  Using a buffered input to read the input stream is better than a scanner as it stores large chunks of input as an internal buffer which is more efficient
-     * @return
+     * @return String
      * @throws Exception
      */
     public static String readMaskedPass() throws Exception {

@@ -231,7 +231,7 @@ public class TaskManager {
         JSONArray jsonArray = getArray(uName);
         JSONObject newObj = new JSONObject();
         newObj.put("taskName", tName);
-        if (checkTaskDescription(tDescription)) return;
+        if (checkTaskDescription(tDescription)) return; // checks the task description length
         newObj.put("taskDesc", tDescription);
         newObj.put("devDetails", dDetails);
         newObj.put("taskDuration", tHours);
@@ -265,8 +265,7 @@ public class TaskManager {
         JSONObject newObj = (JSONObject) jsonArray.get(index);
         switch (byIndex) {
             case 1 -> newObj.put("taskName", newData);
-            case 2 ->
-                    newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
+            case 2 -> newObj.put("taskDesc", newData); //TODO length of description check - also need to make sure that this is in fact the right check and its not the one for
             case 3 -> newObj.put("devDetails", newData);
             case 4 -> newObj.put("taskDuration", newData);
             case 5 -> newObj.put("taskStatus", newData);
@@ -277,7 +276,7 @@ public class TaskManager {
 
 
     /**
-     * File update. I should probs use a global file manager but this can be done later on for now this is fine and it works
+     * File update. I should probs use a global file manager but this can be done later on for now this is fine, and it works
      *
      * @param path
      * @param data

@@ -48,17 +48,16 @@ public class MainPage extends Thread {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             Login lm = new Login();
-            System.out.println("Please type help for more information");
+            System.out.println("Please type \"help\" for more information");
             while (!stopped) {
                 String[] strInput = reader.readLine().split(" ");
                 if (strInput.length <= 0) continue;// if the line is greater than 0 then proceed with check
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
-                    case "?", "help" -> //TODO: add help for the table stuff im thinking i need to go from the login into the table immediately that seems like the most logical
-                            System.out.println("""
-                                    > help - Displays info about the commands that can be run
-                                    > login - Provides page for user login
-                                    > signup - Allows the user to create a new account
-                                    > exit - Exits the program""");
+                    case "?", "help" -> System.out.println("""
+                            > help - Displays info about the commands that can be run
+                            > login - Provides page for user login
+                            > signup - Allows the user to create a new account
+                            > exit - Exits the program""");
 
                     case "login", "signin" -> { //logs the user in and checks and validates there credentials
                         if (Login.returnLoginStatus()) {
@@ -70,9 +69,9 @@ public class MainPage extends Thread {
                             break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-                        //  currentUserFromCache = "max"; //TODO testing will need to remove for final release
+                        //  currentUserFromCache = "max"; //TODO remove for final release. Used for testing without needing to login
                         TaskManager taskManager = new TaskManager();
-                        System.out.println("\tReport View:\n");
+                        System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
                             switch (reader.readLine()) { //new help as there is now more commands as the user has logged in and has authorised access to them
@@ -149,10 +148,6 @@ public class MainPage extends Thread {
                         }
                     }
                     case "signup" -> { // allows users to create accounts
-                        /**
-                         * TODO: i really wanna make something that prevents GIGO where poor data entry will lead to errors cause this is CLI.. and its annoying
-                         *  //  if (!fName.isEmpty());
-                         */
                         System.out.println("Please Enter your first name");
                         String fName = reader.readLine();
                         System.out.println("Please Enter your surname");

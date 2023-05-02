@@ -12,7 +12,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author <a href="mailto:https://github.com/klaus31/ascii-art-table"
+ * @author <a href="mailto:https://github.com/klaus31/ascii-art-table</a>"
  * This was based off klaus31 ascii-art-table that can be accessed in the link above.
  * @author Max Day as rewritten 76% of it to be more efficient and better. This counts as almost an entire rewirte and since this is published under the MIT license (https://github.com/klaus31/ascii-art-table/blob/master/LICENSE)
  * which allows for odification and distrobution I may claim the rewirte as mine byt credit that it was his based of klaus31's
@@ -20,22 +20,36 @@ import org.apache.commons.lang3.StringUtils;
  * Changes to view the diff is here https://github.com/ML0Day0VC/MaxDay_POEVer1/commit/675ea44fee5f40b763d0fdd4c7494c9b37d8093c
  */
 
-public class AsciiArtTable {//TODO comment this fully and explain it
+public class AsciiArtTable {
 
+    /**
+     * Adds padding tldr
+     *
+     * @param subject
+     * @param length
+     * @return
+     */
     private static String appendToLength(final Object subject, final int length) {
         final String subjectString = subject == null ? "" : subject.toString();
         return subjectString.length() < length ? subjectString + StringUtils.repeat(' ', length - subjectString.length()) : subjectString;
     }
 
+    /**
+     * Adds padding tldr
+     *
+     * @param subject
+     * @param length
+     * @return
+     */
     private static String prependToLength(final Object subject, final int length) {
         final String subjectString = subject == null ? "" : subject.toString();
         return subjectString.length() < length ? StringUtils.repeat(' ', length - subjectString.length()) + subjectString : subjectString;
     }
 
-    private String borderCharacters;
+    private final String borderCharacters;
     private final List<Object> contentCols, headerCols, headlines;
-    private int maxColumnWidth = 80;
-    private boolean minimiseHeight = false;
+    private final int maxColumnWidth = 80;
+    private final boolean minimiseHeight = false;
     private final int padding;
 
     public AsciiArtTable() {
@@ -45,10 +59,6 @@ public class AsciiArtTable {//TODO comment this fully and explain it
     public AsciiArtTable(final int padding) {
         this(padding, "╔═╤╗║╟─┬╢╪╠╣│╚╧╝┼");
     } // ╔ ═ ╤ ╗ ║ ╟ ─ ┬ ╢ ╪ ╠ ╣ │ ╚ ╧ ╝ ┼
-    //_ _ _
-    //       |
-    //       __
-    //╔═╤╗║╟─┬╢╪╠╣│╚╧╝┼
 
     public AsciiArtTable(final int padding, final String borderCharacters) {
         this.headerCols = new ArrayList<>();
@@ -74,10 +84,13 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         addHeaderCols(new ArrayList<>(Arrays.asList(headerCols)));
     }
 
-    public void addHeadline(final Object headline) {
-        this.headlines.add(headline);
-    }
-
+    /**
+     * Shifts the data to the left to make the table cleaner. This can be right side but middle becomes difficult with alignment
+     *
+     * @param linesContents
+     * @param col
+     * @return
+     */
     private boolean alignLeft(final List<List<String>> linesContents, final int col) {
         boolean result = false;
         if (linesContents.size() > 1) {
@@ -91,12 +104,11 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         return result;
     }
 
-    public void clear() {
-        headerCols.clear();
-        contentCols.clear();
-        headlines.clear();
-    }
-
+    /**
+     * Gets the length of each of the columns
+     *
+     * @return
+     */
     private int[] getColWidths() {
         int[] result = new int[headerCols.size()];
         for (int col = 0; col < headerCols.size(); col++) {
@@ -114,12 +126,14 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         return result;
     }
 
-    public String getOutput() {
-        // prepare data
-        while (contentCols.size() % headerCols.size() != 0) {
+    /**
+     * Generates main output. The main structure is to build the data then create an object for each line of output add the data and row and save it to the string
+     *
+     * @return
+     */
+    public String getOutput() {//TODO convert to string builder
+        while (contentCols.size() % headerCols.size() != 0)
             contentCols.add("");
-        }
-        // build header
         String result = "";
         if (headlines.isEmpty()) {
             result += row(borderCharacters.charAt(0), borderCharacters.charAt(1), borderCharacters.charAt(2), borderCharacters.charAt(3)) + System.lineSeparator();
@@ -155,28 +169,42 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         return result;
     }
 
+    /**
+     * Takes the max lengths of the columns and then adds padding(spaces on the sides) to make it look neat
+     *
+     * @return
+     */
     private int getTableLength() {
         final int[] colWidths = getColWidths();
         int totalPadding = 2 * padding * colWidths.length;
         int totalColWidths = Arrays.stream(colWidths).sum();
         int totalColumnSeparators = colWidths.length - 1;
         int totalChars = totalPadding + totalColWidths + totalColumnSeparators;
-        return totalChars + 2; // add 2 for the border characters
+        return totalChars + 2;
     }
 
-    public void minimiseHeight() {
-        minimiseHeight = true;
-    }
-
+    /**
+     * Boolean that checks the length of the string of the header  column object to check if it's greater than 0.
+     *
+     * @return
+     */
     private boolean outputOfHeaderColsIsRequested() {
         return headerCols.stream().anyMatch(h -> h.toString().length() > 0);
     }
-
 
     public void print(final PrintStream printStream) {
         printStream.print(getOutput());
     }
 
+    /**
+     * Table builder. Takes the specialised characters for the table and forms a string of characters to structure the table
+     *
+     * @param left
+     * @param middle
+     * @param columnSeparator
+     * @param right
+     * @return
+     */
     private String row(final char left, final char middle, final char columnSeparator, final char right) {
         final int[] colWidths = getColWidths();
         String result = left + "";
@@ -189,7 +217,16 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         return result;
     }
 
-    private String row(final List<Object> contents, final char left, final char columnSeparator, final char right) {
+    /**
+     * Table builder. Takes the specialised characters for the table and forms a string with each row with data included. This overrides the method above
+     *
+     * @param contents
+     * @param left
+     * @param columnSeparator
+     * @param right
+     * @return
+     */
+    private String row(final List<Object> contents, final char left, final char columnSeparator, final char right) { //TODO STRINGBUILDERRRRRRR.....
         final int[] colWidths = getColWidths();
         String result = "";
         List<List<String>> linesContents = splitToMaxLength(contents, maxColumnWidth);
@@ -214,40 +251,35 @@ public class AsciiArtTable {//TODO comment this fully and explain it
         return result;
     }
 
+    /**
+     * Generates the header of the table with the titles
+     *
+     * @param headline
+     * @param left
+     * @param right
+     * @return
+     */
     private String rowHeadline(final String headline, final char left, final char right) {
         final int tableLength = getTableLength();
         final int contentWidth = tableLength - (2 * padding) - 2;
-
-        // split into headline rows
-        final List<String> headlineLines = Arrays.asList(headline.split("(?<=\\G.{" + contentWidth + "})"));
-
-        // build result
+        final String[] headlineLines = headline.split("(?<=\\G.{" + contentWidth + "})");
+        // final String[] headlineLines = headline.split("(?<=\\G.{" + contentWidth + "})"); // why does this not work it is excatly the same...
         String result = "";
-        for (String headlineLine : headlineLines) {
+        for (String headlineLine : headlineLines) {//TODO string builder lol
             result += left + StringUtils.repeat(' ', padding) + StringUtils.rightPad(headlineLine, tableLength - padding - 2) + right + System.lineSeparator();
         }
         return result;
     }
 
-    public void setBorderCharacters(final String borderCharacters) {
-        this.borderCharacters = borderCharacters;
-    }
-
-    public void setMaxColumnWidth(final int maxColumnWidth) {
-        this.maxColumnWidth = maxColumnWidth;
-    }
-
-    public void setNoHeaderColumns(int withColumns) {
-        this.headerCols.clear();
-        while (withColumns-- > 0) {
-            this.headerCols.add("");
-        }
-    }
-
-
+    /**
+     * Makes sure each line ends with a complete word and that the input is split into a list structure where each row.
+     *
+     * @param subjects
+     * @param maxLength
+     * @return
+     */
     private List<List<String>> splitToMaxLength(final List<Object> subjects, final int maxLength) {
         List<List<String>> result = new ArrayList<>();
-
         for (Object subject : subjects) {
             String content = subject.toString();
             List<String> cellContentLines = new ArrayList<>();
@@ -261,30 +293,29 @@ public class AsciiArtTable {//TODO comment this fully and explain it
                 cellContentLines.add(line);
                 content = content.substring(index + 1);
             }
-
             cellContentLines.add(content);
-
-            while (cellContentLines.size() < result.size() + 1) {
+            while (cellContentLines.size() < result.size() + 1)
                 cellContentLines.add("");
-            }
-
             result.add(cellContentLines);
         }
-
         return transpose(result);
     }
 
+    /**
+     * Method is used to flip the colum with matrix to make it easier to edit the columns in certain scenarios
+     *
+     * @param matrix
+     * @return
+     */
     private List<List<String>> transpose(List<List<String>> matrix) {
         List<List<String>> result = new ArrayList<>();
-
         for (int col = 0; col < matrix.get(0).size(); col++) {
             List<String> row = new ArrayList<>();
-            for (int rowIdx = 0; rowIdx < matrix.size(); rowIdx++) {
-                row.add(matrix.get(rowIdx).get(col));
+            for (List<String> strings : matrix) {
+                row.add(strings.get(col));
             }
             result.add(row);
         }
         return result;
     }
-
 }
