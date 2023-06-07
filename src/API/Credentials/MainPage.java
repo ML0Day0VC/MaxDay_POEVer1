@@ -16,7 +16,6 @@ import java.util.Locale;
 public class MainPage extends Thread {
     private static HashMap<String, Object> cache = new HashMap<>(); // cache hashmap
     private static final boolean stopped = false;
-    private static String currentUserFromCache = "";
 
     public MainPage() {
     }
@@ -68,7 +67,7 @@ public class MainPage extends Thread {
                         if (!Login.returnLoginStatus())
                             break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
-                        currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
+                        String currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
                         //  currentUserFromCache = "max"; //TODO remove for final release. Used for testing without needing to login
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");

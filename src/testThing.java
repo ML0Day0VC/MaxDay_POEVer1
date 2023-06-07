@@ -7,6 +7,8 @@
  * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
  * <p>
  * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
+ * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
+ * IGNORE THIS THIS IS A TEST FILE IM GOING TO UNVERSION THIS FILE SOON
  */
 
 /**
@@ -15,6 +17,8 @@
  */
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -43,6 +47,21 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
 
     public static void main(String[] args) {
 
+        String msg = "<html>This is how to get:<ul><li><i>italics</i> and <li><b>bold</b> and "
+                     + "<li><u>underlined</u>...</ul></html>";
+        JLabel label = new JLabel(msg);
+        label.setFont(new Font("serif", Font.PLAIN, 14));
+        JOptionPane.showConfirmDialog(null, label);
+
+
+
+      int jop =   JOptionPane.showConfirmDialog(null, "Is the contact server up", "Please select", JOptionPane.YES_NO_OPTION);
+
+        System.out.println(jop); // 0 = yes 1 = 0 ????????
+
+
+
+
         String taskName = "get supplies";
         int taskNumber = 24;
         String developerName = "James Smith";
@@ -65,8 +84,6 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
         } else {
             System.out.println("Pattern does not match input");
         }
-
-
 
 
         try {

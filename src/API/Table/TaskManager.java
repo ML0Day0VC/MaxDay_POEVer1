@@ -8,6 +8,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
@@ -235,11 +237,20 @@ public class TaskManager {
         newObj.put("taskDesc", tDescription);
         newObj.put("devDetails", dDetails);
         newObj.put("taskDuration", tHours);
-        newObj.put("taskStatus", status); //TODO enum issues could occur here idk
+        newObj.put("taskStatus", status);
         jsonArray.add(newObj);
-        System.out.println("Task successfully captured");
-        update(uName, jsonArray.toJSONString());
-
+        // this HTML formatting is so nice I love it so much
+        // the order is meant to be: "Task Status, Developer Details, Task Number, Task Name, Task, Description, Task ID and Duration" according to the rubric but it really does not matter. What's important is that all the info is there
+        String txt = String.format("<html><b>Please confirm the following input:</b><li>   Task Name: <b>%s</b><li>  Description: <b>%s</b><li>  Developer Details: <b>%s</b><li>  Task Duration: <b>%d</b><li>  Task Status: <b>%d</b><br><br><b>Press <u>Yes</u> to confirm, and <u>No</u> to cancel</b></html>", tName, tDescription, dDetails, tHours, status);
+        JLabel label = new JLabel(txt);
+        label.setFont(new Font("serif", Font.PLAIN, 14));
+        int jop = JOptionPane.showConfirmDialog(null, label, "Confirm Input", JOptionPane.YES_NO_OPTION);
+        if (jop == JOptionPane.YES_OPTION) { // returns 0 for yes and 1 for no why???????
+            System.out.println("Task successfully captured");
+            update(uName, jsonArray.toJSONString()); // will only execute when the jOptionPane receives yes as the input from the user
+            return;
+        }
+        System.out.println("Task was not captured");
     }
 
     /**
