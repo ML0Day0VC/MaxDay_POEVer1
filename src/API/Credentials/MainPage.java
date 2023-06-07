@@ -50,7 +50,7 @@ public class MainPage extends Thread {
         try {
             Login lm = new Login();
             System.out.println("Please type \"help\" for more information");
-            while (!stopped) {
+            while (true) {// better than !stopped
                 String[] strInput = reader.readLine().split(" ");
                 if (strInput.length <= 0) continue;// if the line is greater than 0 then proceed with check
                 switch (strInput[0].toLowerCase(Locale.ROOT)) {
@@ -66,34 +66,20 @@ public class MainPage extends Thread {
                             break;
                         }
                         Login.loginUser();
-                        if (!Login.returnLoginStatus())
-                            break;
+                        if (!Login.returnLoginStatus()) break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         String currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-/*
-                        String msg = "<html>This is how to get:<ul><li><i>italics</i> and <li><b>bold</b> and "
-                                     + "<li><u>underlined</u>...</ul></html>";
-                        JLabel label = new JLabel(msg);
-                        label.setFont(new Font("serif", Font.PLAIN, 14));
-                        JOptionPane.showConfirmDialog(null, label);
-                        //add tasks
-                        // show report
-                        //quit
-*/
-
+                        currentUserFromCache = "max";
                         Object[] options = {"Manage Tasks", "Display", "Quit"};
-
-                        int result = JOptionPane.showOptionDialog(null, "Select a button",
-                                "Custom Buttons", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-
+                        String text = "<html>\n" + "   <head>\n" + "      <style>\n" + "         .column {\n" + "            float: left;\n" + "            width: 33.33%;\n" + "            padding: 10px;\n" + "            box-sizing: border-box;\n" + "         }\n" + "         .row::after {\n" + "            content: \"\";\n" + "            clear: both;\n" + "            display: table;\n" + "         }\n" + "      </style>\n" + "   </head>\n" + "   <body>\n" + "      <div class=\"row\">\n" + "         <div class=\"column\">\n" + "            <h2>Manage Tasks</h2>\n" + "            <p>Allows the user to edit, remove, delete and add tasks to the database</p>\n" + "         </div>\n" + "         <div class=\"column\">\n" + "            <h2>Display</h2>\n" + "            <p>Shows the formatted report</p>\n" + "         </div>\n" + "         <div class=\"column\">\n" + "            <h2>Quit</h2>\n" + "            <p>Quits the application</p>\n" + "         </div>\n" + "      </div>\n" + "   </body>\n" + "</html>";
+                        JLabel label = new JLabel(text);
+                        label.setFont(new Font("serif", Font.PLAIN, 14));
+                        int result = JOptionPane.showOptionDialog(null, label, "Please select one of the options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
                         switch (result) {
-                            case 0 -> System.out.println("Button 1 clicked");
-                            case 1 ->  TaskManager.printTaskDetails(currentUserFromCache); // displays the report
+                            case 0 -> System.out.println("Opening report view"); // this will just break out to the following method so it works lol
+                            case 1 -> TaskManager.printTaskDetails(currentUserFromCache); // displays the report
                             case 2 -> System.exit(420); // exits the program
                         }
-
-
-
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");
                         boolean isStoppedTable = false;
