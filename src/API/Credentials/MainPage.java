@@ -7,6 +7,8 @@ package API.Credentials;
 
 import API.Table.TaskManager;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -68,7 +70,30 @@ public class MainPage extends Thread {
                             break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         String currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-                        //  currentUserFromCache = "max"; //TODO remove for final release. Used for testing without needing to login
+/*
+                        String msg = "<html>This is how to get:<ul><li><i>italics</i> and <li><b>bold</b> and "
+                                     + "<li><u>underlined</u>...</ul></html>";
+                        JLabel label = new JLabel(msg);
+                        label.setFont(new Font("serif", Font.PLAIN, 14));
+                        JOptionPane.showConfirmDialog(null, label);
+                        //add tasks
+                        // show report
+                        //quit
+*/
+
+                        Object[] options = {"Manage Tasks", "Display", "Quit"};
+
+                        int result = JOptionPane.showOptionDialog(null, "Select a button",
+                                "Custom Buttons", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+                        switch (result) {
+                            case 0 -> System.out.println("Button 1 clicked");
+                            case 1 ->  TaskManager.printTaskDetails(currentUserFromCache); // displays the report
+                            case 2 -> System.exit(420); // exits the program
+                        }
+
+
+
                         TaskManager taskManager = new TaskManager();
                         System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");
                         boolean isStoppedTable = false;

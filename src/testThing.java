@@ -47,6 +47,68 @@ return cache.computeIfAbsent(key, k -> retrieveValueFromSource(k));
 
     public static void main(String[] args) {
 
+
+            Object[] options = {"Button 1", "Button 2", "Button 3"};
+
+            int result = JOptionPane.showOptionDialog(null,
+                    "Select a button",
+                    "Custom Buttons",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (result == 0) {
+                System.out.println("Button 1 clicked");
+            } else if (result == 1) {
+                System.out.println("Button 2 clicked");
+            } else if (result == 2) {
+                System.out.println("Button 3 clicked");
+            }
+
+
+
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+
+        JTextField textField1 = new JTextField();
+        JTextField textField2 = new JTextField();
+        JTextField textField3 = new JTextField();
+
+        panel.add(new JLabel("Line 1:"));
+        panel.add(textField1);
+        panel.add(new JLabel("Line 2:"));
+        panel.add(textField2);
+        panel.add(new JLabel("Line 3:"));
+        panel.add(textField3);
+/*
+        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Text", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String line1 = textField1.getText();
+            String line2 = textField2.getText();
+            String line3 = textField3.getText();
+
+            System.out.println("Line 1: " + line1);
+            System.out.println("Line 2: " + line2);
+            System.out.println("Line 3: " + line3);
+        }
+
+
+
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
         String msg = "<html>This is how to get:<ul><li><i>italics</i> and <li><b>bold</b> and "
                      + "<li><u>underlined</u>...</ul></html>";
         JLabel label = new JLabel(msg);
