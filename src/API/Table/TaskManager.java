@@ -212,10 +212,24 @@ public class TaskManager {
      * @param index
      * @throws Exception
      */
-    public void removeItem(String uName, int index) throws Exception {
+    public void removeItem(String uName, int index) throws Exception { //TODO: add for Joption pane thingie that i rly dont like
+
+
         JSONArray jsonArray = getArray(uName);
-        jsonArray.remove(index);
+          //  System.out.println(jsonArray.);
+       jsonArray.remove(index);
         update(uName, jsonArray.toJSONString());
+        /*
+        String txt = String.format("<html><b>Please confirm the following input:</b><li>   Task Name: <b>%s</b><li>  Description: <b>%s</b><li>  Developer Details: <b>%s</b><li>  Task Duration: <b>%d</b><li>  Task Status: <b>%s</b><br><br><b>Press <u>Yes</u> to confirm, and <u>No</u> to cancel</b></html>", tName, tDescription, dDetails, tHours, validateLabel(status));
+        JLabel label = new JLabel(txt);
+        label.setFont(new Font("serif", Font.PLAIN, 14));
+        int jop = JOptionPane.showConfirmDialog(null, label, "Confirm Input", JOptionPane.YES_NO_OPTION);
+        if (jop == JOptionPane.YES_OPTION) { // returns 0 for yes and 1 for no why???????
+            System.out.println("Task successfully captured");
+            update(uName, jsonArray.toJSONString()); // will only execute when the jOptionPane receives yes as the input from the user
+            return;
+        }
+         */
     }
 
     /**
