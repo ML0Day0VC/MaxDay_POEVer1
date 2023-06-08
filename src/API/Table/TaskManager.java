@@ -241,7 +241,7 @@ public class TaskManager {
         jsonArray.add(newObj);
         // this HTML formatting is so nice I love it so much
         // the order is meant to be: "Task Status, Developer Details, Task Number, Task Name, Task, Description, Task ID and Duration" according to the rubric but it really does not matter. What's important is that all the info is there
-        String txt = String.format("<html><b>Please confirm the following input:</b><li>   Task Name: <b>%s</b><li>  Description: <b>%s</b><li>  Developer Details: <b>%s</b><li>  Task Duration: <b>%d</b><li>  Task Status: <b>%d</b><br><br><b>Press <u>Yes</u> to confirm, and <u>No</u> to cancel</b></html>", tName, tDescription, dDetails, tHours, status);
+        String txt = String.format("<html><b>Please confirm the following input:</b><li>   Task Name: <b>%s</b><li>  Description: <b>%s</b><li>  Developer Details: <b>%s</b><li>  Task Duration: <b>%d</b><li>  Task Status: <b>%s</b><br><br><b>Press <u>Yes</u> to confirm, and <u>No</u> to cancel</b></html>", tName, tDescription, dDetails, tHours, validateLabel(status));
         JLabel label = new JLabel(txt);
         label.setFont(new Font("serif", Font.PLAIN, 14));
         int jop = JOptionPane.showConfirmDialog(null, label, "Confirm Input", JOptionPane.YES_NO_OPTION);

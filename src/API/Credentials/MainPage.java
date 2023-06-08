@@ -69,21 +69,25 @@ public class MainPage extends Thread {
                         if (!Login.returnLoginStatus()) break;
                         Collection<Object> values = cache.values(); // reads the username of the user from the cache. Note this is just a standard hashmap declared at the top of the class
                         String currentUserFromCache = values.toString().toLowerCase(Locale.ROOT).substring(1, values.toString().length() - 1); // extracting from cache
-                        currentUserFromCache = "max";
                         Object[] options = {"Manage Tasks", "Display", "Quit"};
-                        String text = "<html>\n" + "   <head>\n" + "      <style>\n" + "         .column {\n" + "            float: left;\n" + "            width: 33.33%;\n" + "            padding: 10px;\n" + "            box-sizing: border-box;\n" + "         }\n" + "         .row::after {\n" + "            content: \"\";\n" + "            clear: both;\n" + "            display: table;\n" + "         }\n" + "      </style>\n" + "   </head>\n" + "   <body>\n" + "      <div class=\"row\">\n" + "         <div class=\"column\">\n" + "            <h2>Manage Tasks</h2>\n" + "            <p>Allows the user to edit, remove, delete and add tasks to the database</p>\n" + "         </div>\n" + "         <div class=\"column\">\n" + "            <h2>Display</h2>\n" + "            <p>Shows the formatted report</p>\n" + "         </div>\n" + "         <div class=\"column\">\n" + "            <h2>Quit</h2>\n" + "            <p>Quits the application</p>\n" + "         </div>\n" + "      </div>\n" + "   </body>\n" + "</html>";
+                        // I cannot get the formatting of the "task Manager" correct i think its just a bug with stupid Jframes
+                        String text = "<html><b>Please Select One of the Options:</b><br><br>\n" + "    \n" + "&nbsp<b>Task Manager:</b><li>   Add Tasks<li>  Remove Tasks<li>  Edit Tasks<li>  Display and Mange Developers<br><br>\n" + "\n" + "<b>Display:</b><li>   View the Completed Report<li>  View Total Hours<br><br>\n" + "\n" + "<b>Quit:</b><li>   Quits the Program<li>  Logs out the current user\n" + "\n" + "\n" + "</html>";
                         JLabel label = new JLabel(text);
                         label.setFont(new Font("serif", Font.PLAIN, 14));
-                        int result = JOptionPane.showOptionDialog(null, label, "Please select one of the options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-                        switch (result) {
-                            case 0 -> System.out.println("Opening report view"); // this will just break out to the following method so it works lol
-                            case 1 -> TaskManager.printTaskDetails(currentUserFromCache); // displays the report
-                            case 2 -> System.exit(420); // exits the program
-                        }
                         TaskManager taskManager = new TaskManager();
-                        System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");
                         boolean isStoppedTable = false;
                         while (!isStoppedTable) {
+                            int result = JOptionPane.showOptionDialog(null, label, "Please select one of the options", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                            switch (result) {
+                                case 0 ->
+                                        System.out.println("Opening report view"); // this will just break out to the following method so it works lol
+                                case 1 -> TaskManager.printTaskDetails(currentUserFromCache); // displays the report
+                                case 2 -> System.exit(420); // exits the program
+                            }
+                            // TaskManager taskManager = new TaskManager();
+                            //   System.out.println("\n\tReport View:\n\tPlease type \"help\" for more information");
+                            //    boolean isStoppedTable = false;
+                            //     while (!isStoppedTable) { TODO: please redo this as it is very very inefficient and poorly made. Yes it works but the GUI is such an inconvenience
                             switch (reader.readLine()) { //new help as there is now more commands as the user has logged in and has authorised access to them
                                 case "?", "help" -> System.out.println("""
                                         > help - Displays info about the commands that can be run
